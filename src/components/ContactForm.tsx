@@ -351,8 +351,8 @@ const ContactForm = () => {
             <section className="py-16 bg-white">
                 <div className="container mx-auto flex flex-col md:flex-row items-center gap-8">
                     {/* Logo and Heading */}
-                    <div className="text-center md:text-left md:w-1/2">
-                        <Image src='/logo_with_form.png' height={300} width={500} alt='logo' />
+                    <div className="text-center md:text-left md:w-1/2 md:mr-[100px]">
+                        <Image src='/logo_with_form.png' height={300} width={576.92} alt='logo' />
                     </div>
 
                     {/* Form */}
