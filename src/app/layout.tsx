@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ContactFormProvider } from "@/contexts/ContactFormContext";
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 
 const dmSans = DM_Sans({ 
   subsets: ["latin"],
@@ -52,6 +53,7 @@ export default function RootLayout({
                 </head>
                 <body className={dmSans.className} suppressHydrationWarning>
                     {children}
+                    <Analytics />
                 </body>
             </html>
         </ContactFormProvider>
