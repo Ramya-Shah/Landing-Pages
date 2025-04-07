@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Image from "next/legacy/image";
 import { useContactFormContext } from '@/contexts/ContactFormContext';
 
@@ -77,21 +77,21 @@ const ContactForm = () => {
                 if (value.trim().length < 3) return 'Name must be at least 3 characters';
                 if (!/^[a-zA-Z\s]+$/.test(value.trim())) return 'Name should contain only letters';
                 return '';
-
+            
             case 'email':
                 if (!value.trim()) return 'Email is required';
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) return 'Please enter a valid email address';
                 return '';
-
+            
             case 'phone':
                 if (!value.trim()) return 'Phone number is required';
                 if (!/^\d{10}$/.test(value.replace(/\s/g, ''))) return 'Please enter a valid 10-digit phone number';
                 return '';
-
+            
             case 'state':
                 if (!value) return 'Please select your state';
                 return '';
-
+            
             default:
                 return '';
         }
@@ -121,23 +121,23 @@ const ContactForm = () => {
         };
 
         setErrors(newErrors);
-
+        
         // Check if there are any errors
         return !Object.values(newErrors).some(error => error !== '');
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>, isPopup = false) => {
         e.preventDefault();
-
+        
         // First validate the form
         if (!validateForm()) {
-            setSubmitMessage({
-                text: 'Please fix the errors before submitting.',
-                isError: true
+            setSubmitMessage({ 
+                text: 'Please fix the errors before submitting.', 
+                isError: true 
             });
             return;
         }
-
+        
         setIsSubmitting(true);
         setSubmitMessage({ text: '', isError: false });
         setShowConfirmation(false);
@@ -172,22 +172,22 @@ const ContactForm = () => {
 
             setSubmitMessage({ text: successMessage, isError: false });
 
-            // Show confirmation for non-popup form and prepare for redirect
+            // Show confirmation for non-popup form
             if (!isPopup) {
                 setShowConfirmation(true);
                 setTimeout(() => {
                     setShowConfirmation(false);
                     // Redirect after showing confirmation
-                    window.location.href = "https://www.daiict.ac.in/mtech-ict-all-india-category";
+                    window.location.href = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category";
                 }, 2000); // Reduced to 3 seconds before redirect
             }
 
-            // Close popup form if needed and redirect
+            // Close popup form if needed
             if (isPopup) {
                 setTimeout(() => {
                     setIsPopupOpen(false);
                     // Redirect after closing popup
-                    window.location.href = "https://www.daiict.ac.in/mtech-ict-all-india-category";
+                    window.location.href = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category";
                 }, 2000);
             }
         } catch (error) {
@@ -346,7 +346,7 @@ const ContactForm = () => {
                     </div>
                 </div>
             )}
- 
+
             {/* Main Contact Form Section */}
             <section className="py-16 bg-white">
                 <div className="container mx-auto flex flex-col md:flex-row items-center gap-8">

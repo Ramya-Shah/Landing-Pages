@@ -108,7 +108,7 @@ const Header = () => {
               onClick={() => scrollToSection("life-at-dau")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              Aboud DAU
+              About DAU
             </button>
             <button
               onClick={() => scrollToSection("contact-form")}

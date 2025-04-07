@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./ui/button";
-import NetworkBackground from "./NetworkBackground";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
 
@@ -56,10 +54,10 @@ const HeroSection = () => {
                         The M.Tech (ICT) at DAU equips students for careers in technology,
                         research, and
                         <br />
-                        development. With specialization tracks and advanced coursework,
-                        it covers key areas
+                        innovation. With specialization tracks and advanced coursework,
+                        it covers key areas in
                         <br />
-                        in computing, communication, and system design.
+                        computing, communication, and system design.
                     </p>
 
                     <div className="flex justify-center gap-4">
@@ -110,7 +108,7 @@ const HeroSection = () => {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="my-8"
                 >
-                    <img src="./Path.png" alt="Decorative Path" />
+                    <img src="./mtech.png" alt="Decorative Path" />
                 </motion.div>
 
                 {/* Animated grid with statistic cards and logo */}
