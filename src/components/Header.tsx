@@ -62,7 +62,7 @@ const Header = () => {
               <Image
                 src="/DAU_Header1.png"
                 alt="Dhirubhai Ambani University"
-                width={100}
+                width={120}
                 height={100}
                 className="mr-2"
               />

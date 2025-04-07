@@ -29,12 +29,12 @@ const TopRecruiters: React.FC = () => {
     <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold text-blue-900 text-center mb-4">
-          Top Recruiters
+          Some Of The Top Recruiters
         </h2>
-        <p className="text-gray-900 text-xl text-center mb-12">
+        {/*<p className="text-gray-900 text-xl text-center mb-12">
           More than 160 companies visited Dhirubhai Ambani University Campus for
           placements
-        </p>
+        </p>*/}
 
         <div className="relative w-full overflow-hidden">
           <motion.div
