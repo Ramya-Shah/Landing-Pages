@@ -6,24 +6,27 @@ import { motion } from "framer-motion";
 const campusImages = [
   { src: "/7.jpg", alt: "Campus buildings" },
   { src: "/8.jpg", alt: "Campus buildings" },
-  { src: "/9.jpg", alt: "Campus buildings" },
   { src: "/10.jpeg", alt: "Campus buildings" },
-  { src: "/11.jpg", alt: "Campus buildings" },
   { src: "/12.jpg", alt: "Campus buildings" },
-  { src: "/13.JPG", alt: "Campus buildings" },
   { src: "/14.jpg", alt: "Campus buildings" },
+  { src: "/16.jpg", alt: "Campus buildings" },
+  { src: "/17.JPG", alt: "Campus buildings" },
+  { src: "/26.png", alt: "Campus buildings" },
+  { src: "/18.jpg", alt: "Campus buildings" },
+  { src: "/19.png", alt: "Campus buildings" },
+  { src: "/20.jpg", alt: "Campus buildings" },
+  { src: "/24.jpg", alt: "Campus buildings" },
+  /*}
   { src: "/15.JPG", alt: "Campus buildings" },
   { src: "/16.jpg", alt: "Campus buildings" },
   { src: "/17.jpg", alt: "Campus buildings" },
   { src: "/18.jpg", alt: "Campus buildings" },
-  { src: "/19.png", alt: "Campus buildings" },
-  { src: "/20.jpg", alt: "Campus buildings" },
   { src: "/21.jpg", alt: "Campus buildings" },
   { src: "/22.jpg", alt: "Campus buildings" },
   { src: "/23.JPG", alt: "Campus buildings" },
   { src: "/24.jpg", alt: "Campus buildings" },
   { src: "/25.jpg", alt: "Campus buildings" },
-  
+  */
   // Add more if available
 ];
 
@@ -50,7 +53,7 @@ const LifeAtDAU = () => {
             transition={{
               repeat: Infinity,
               repeatType: "loop",
-              duration: 20,
+              duration: 40,
               ease: "linear",
             }}
           >
