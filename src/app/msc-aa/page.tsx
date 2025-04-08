@@ -39,7 +39,7 @@ export default function Home() {
                 <AboutUs />
             </section>
             <section id="contact-form">
-                <ContactForm />
+                <ContactForm redirectUrl="https://www.daiict.ac.in/admissions-msc-agriculture-analytics"/>
             </section>
             <section id="details">
                 <Footer />
