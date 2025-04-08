@@ -25,8 +25,11 @@ interface ValidationErrors {
     phone: string;
     state: string;
 }
+interface ContactFormProps {
+    redirectUrl?: string;
+  }
 
-const ContactForm = () => {
+const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category" } ) => {
     const { isPopupOpen, setIsPopupOpen } = useContactFormContext();
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -178,7 +181,7 @@ const ContactForm = () => {
                 setTimeout(() => {
                     setShowConfirmation(false);
                     // Redirect after showing confirmation
-                    window.location.href = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category";
+                    window.location.href = redirectUrl;
                 }, 2000); // Reduced to 3 seconds before redirect
             }
 
@@ -187,7 +190,7 @@ const ContactForm = () => {
                 setTimeout(() => {
                     setIsPopupOpen(false);
                     // Redirect after closing popup
-                    window.location.href = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category";
+                    window.location.href = redirectUrl;
                 }, 2000);
             }
         } catch (error) {
