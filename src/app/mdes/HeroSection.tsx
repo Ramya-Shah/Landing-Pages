@@ -81,7 +81,7 @@ const HeroSection = () => {
                 </motion.div>
 
                 {/* Animated image */}
-                <div className="mt-[100px] md:mt-[300px]">
+                <div className="mt-[100px] md:mt-[000px]">
                     <motion.div
                         initial={{ opacity: 0.5, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
