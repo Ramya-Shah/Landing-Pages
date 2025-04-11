@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import AboutUs from "@/components/AboutUs";
 import SuccessStories from "@/components/SuccessStories";
 import Placement from "./Placement";
+import FacultyHighlights from "@/components/FacultyHighlights";
+import NotableAwards from "@/components/NotableAwards";
 
 export default function Home() {
     return (
@@ -18,12 +20,18 @@ export default function Home() {
             <section id="hero-section">
                 <HeroSection />
             </section>
+            <section id="faculty-highlights">
+                <FacultyHighlights />
+            </section>
+            <section id="notable-awards">
+                <NotableAwards />
+            </section>
             <section id="top-recruiters">
                 <TopRecruiters />
             </section>
-            <section id="placement">
+            {/*<section id="placement">
                 <Placement />
-            </section>
+            </section>*/}
             {/* <section id="placement-stories">
         <PlacementStories />
       </section>
