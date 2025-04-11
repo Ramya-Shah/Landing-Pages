@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
+import { motion, useAnimation } from "framer-motion";
 
 const campusImages = [
   { src: "/7.jpg", alt: "Campus buildings" },
@@ -31,8 +32,30 @@ const campusImages = [
 ];
 
 const LifeAtDAU = () => {
-  // Duplicate images for seamless loop
-  const duplicatedImages = [...campusImages, ...campusImages];
+  const [isClient, setIsClient] = useState(false);
+  const controls = useAnimation();
+
+  // Only run animations on client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const startAnimation = useCallback(async () => {
+    await controls.start({
+      x: "-50%",
+      transition: {
+        duration: 40,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    });
+  }, [controls]);
+
+  useEffect(() => {
+    if (isClient) {
+      startAnimation();
+    }
+  }, [isClient, startAnimation]);
 
   return (
     <section className="py-16 bg-gray-50 overflow-hidden">
@@ -49,23 +72,48 @@ const LifeAtDAU = () => {
           <motion.div
             className="flex gap-6 w-max"
             initial={{ x: 0 }}
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
-              repeat: Infinity,
-              repeatType: "loop",
-              duration: 40,
-              ease: "linear",
+            animate={controls}
+            style={{
+              willChange: "transform", // Optimize for animations
             }}
           >
-            {duplicatedImages.map((img, index) => (
+            {/* First set of images */}
+            {campusImages.map((img, index) => (
               <div
-                key={index}
+                key={`first-${index}`}
                 className="w-[300px] h-[320px] rounded-xl overflow-hidden bg-gray-200 flex-shrink-0 shadow-md"
+                style={{
+                  contain: "paint layout", // Optimize paint and layout
+                }}
               >
-                <img
+                <Image
                   src={img.src}
                   alt={img.alt}
-                  className="w-full h-full object-cover transition-opacity duration-500"
+                  width={300}
+                  height={320}
+                  className="w-full h-full object-cover"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  quality={75}
+                />
+              </div>
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {campusImages.map((img, index) => (
+              <div
+                key={`second-${index}`}
+                className="w-[300px] h-[320px] rounded-xl overflow-hidden bg-gray-200 flex-shrink-0 shadow-md"
+                style={{
+                  contain: "paint layout", // Optimize paint and layout
+                }}
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  width={300}
+                  height={320}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  quality={75}
                 />
               </div>
             ))}
@@ -76,4 +124,5 @@ const LifeAtDAU = () => {
   );
 };
 
-export default LifeAtDAU;
+// Memoize the component to prevent unnecessary re-renders
+export default React.memo(LifeAtDAU);

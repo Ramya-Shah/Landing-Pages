@@ -17,7 +17,7 @@ const nextConfig = {
     
     output: undefined,
     images: {
-      unoptimized: true,
+      unoptimized: false,
       domains: [
         "source.unsplash.com",
         "images.unsplash.com",
@@ -47,7 +47,13 @@ const nextConfig = {
         },
       ],
     },
-  };
+    compress: true,
+    
+    // Enable React strict mode for better performance
+    reactStrictMode: true,
+    
+    // Enable SWC minification
+ };
   
   module.exports = nextConfig;
   
