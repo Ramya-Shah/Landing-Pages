@@ -20,13 +20,14 @@ const Placement: React.FC = () => {
                     hidden: { opacity: 0, y: 20 },
                 }}
             >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     {/* First two boxes (will take up first 2 columns) */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:col-span-2">
+                    {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:col-span-2">*/}
+                    <div className="flex flex-col space-y-6 gap-8 h-[400px] md:h-[400px] w-[80%] md:w-[90%] mx-auto">
                         {[
                             {
                                 title: "6 LPA",
-                                subtitle: "Median Salary",
+                                subtitle: "Median Placement",
                                 bg: "bg-white",
                                 text: "text-blue-900",
                             },
@@ -40,12 +41,12 @@ const Placement: React.FC = () => {
                             <motion.div
                                 key={index}
                                 whileHover={{ scale: 1.03, transition: { duration: 0.2 } }}
-                                className={`p-4 shadow-sm rounded-md transition transform duration-300 hover:shadow-md bg-gray-100 hover:bg-red-600 group flex flex-col justify-center h-full`}
+                                className={`ps-[40px] p-4 shadow-sm rounded-md transition transform duration-300 hover:shadow-md bg-gray-100 hover:bg-red-600 group flex flex-col justify-center h-full`}
                             >
-                                <h3 className="text-3xl font-bold text-black group-hover:text-white mb-1">
+                                <h3 className="text-4xl font-bold text-black group-hover:text-white mb-4">
                                     {item.title}
                                 </h3>
-                                <p className="text-black group-hover:text-white text-l">
+                                <p className="text-black group-hover:text-white text-lg">
                                     {item.subtitle}
                                 </p>
                             </motion.div>
