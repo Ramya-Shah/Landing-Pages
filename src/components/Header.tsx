@@ -62,16 +62,15 @@ const Header:  React.FC<HeaderProps> = ({ branchName }) => {
         <div className="container mx-auto flex justify-between items-center text-center">
           {/* Left side with logo and accreditation - modified for mobile */}
           <div className="flex items-center justify-between flex-1 md:flex-none">
-          <button onClick={() => scrollToSection("hero-section")} className="flex flex-col focus:outline-none">
-            <Image
-              src="/DAU_Header1.png"
-              alt="Dhirubhai Ambani University"
-              width={120}
-              height={100}
-              className="mr-2"
-            />
-          </button>
-
+            <div className="flex flex-col cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <Image
+                src="/DAU_Header1.png"
+                alt="Dhirubhai Ambani University"
+                width={120}
+                height={100}
+                className="mr-2"
+              />
+            </div>
             <div className="w-[1px] h-16 bg-blue-700 mx-4">
             </div>
             <div className="flex items-center">

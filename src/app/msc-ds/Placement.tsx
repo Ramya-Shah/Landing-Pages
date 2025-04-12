@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/legacy/image";
 
 const Placement: React.FC = () => {
     return (
@@ -61,10 +62,13 @@ const Placement: React.FC = () => {
                         transition={{ duration: 0.5 }}
                         className="flex justify-center items-center h-full"
                     >
-                        <img 
-                            src="/with placement.png" 
-                            alt="DAU Logo" 
-                            className="h-auto w-full" 
+                        <Image
+                            src="/with placement.png"
+                            alt="DAU Logo"
+                            width={500}
+                            height={300}
+                            className="h-auto w-full"
+                            priority
                         />
                     </motion.div>
                 </div>
