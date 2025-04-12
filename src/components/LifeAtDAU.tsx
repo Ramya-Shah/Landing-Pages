@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { motion, useAnimation } from "framer-motion";
 
 const campusImages = [
