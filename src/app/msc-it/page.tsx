@@ -16,7 +16,7 @@ import NotableAwards from "@/components/NotableAwards";
 export default function Home() {
     return (
         <main className="min-h-screen bg-white">
-            <Header />
+            <Header branchName="MSc.IT."/>
             <section id="hero-section">
                 <HeroSection />
             </section>

@@ -5,7 +5,11 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import { Menu, X } from "lucide-react";
 
-const Header = () => {
+interface HeaderProps {
+  branchName: string;
+}
+
+const Header:  React.FC<HeaderProps> = ({ branchName }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -58,15 +62,16 @@ const Header = () => {
         <div className="container mx-auto flex justify-between items-center text-center">
           {/* Left side with logo and accreditation - modified for mobile */}
           <div className="flex items-center justify-between flex-1 md:flex-none">
-            <Link href="/" className="flex flex-col">
-              <Image
-                src="/DAU_Header1.png"
-                alt="Dhirubhai Ambani University"
-                width={120}
-                height={100}
-                className="mr-2"
-              />
-            </Link>
+          <button onClick={() => scrollToSection("hero-section")} className="flex flex-col focus:outline-none">
+            <Image
+              src="/DAU_Header1.png"
+              alt="Dhirubhai Ambani University"
+              width={120}
+              height={100}
+              className="mr-2"
+            />
+          </button>
+
             <div className="w-[1px] h-16 bg-blue-700 mx-4">
             </div>
             <div className="flex items-center">
@@ -90,8 +95,15 @@ const Header = () => {
               onClick={() => scrollToSection("hero-section")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              Admission
+              {branchName}
             </button>
+            <button
+              onClick={() => scrollToSection("faculty-highlights")}
+              className="text-black hover:text-blue-700 font-medium cursor-pointer">
+              Faculty
+            </button>
+
+            
             <button
               onClick={() => scrollToSection("top-recruiters")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
@@ -99,22 +111,16 @@ const Header = () => {
               Careers
             </button>
             <button
-              onClick={() => scrollToSection("campus-culture")}
-              className="text-black hover:text-blue-700 font-medium cursor-pointer"
-            >
-              Campus Life
-            </button>
-            <button
               onClick={() => scrollToSection("life-at-dau")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              About DAU
+              Life at Dau
             </button>
             <button
-              onClick={() => scrollToSection("contact-form")}
+              onClick={() => scrollToSection("about-us")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              Contact Us
+              About DAU
             </button>
           </nav>
             {/* Right side image */}
@@ -157,8 +163,13 @@ const Header = () => {
             onClick={() => scrollToSection("hero-section")}
             className="text-black hover:text-blue-700 font-medium text-left"
           >
-            Admission
+            {branchName}
           </button>
+          <button
+              onClick={() => scrollToSection("faculty-highlights")}
+              className="text-black hover:text-blue-700 font-medium text-left">
+              Faculty
+            </button>
           <button
             onClick={() => scrollToSection("top-recruiters")}
             className="text-black hover:text-blue-700 font-medium text-left"
@@ -166,22 +177,16 @@ const Header = () => {
             Careers
           </button>
           <button
-            onClick={() => scrollToSection("campus-culture")}
-            className="text-black hover:text-blue-700 font-medium text-left"
-          >
-            Campus Life
-          </button>
-          <button
             onClick={() => scrollToSection("life-at-dau")}
             className="text-black hover:text-blue-700 font-medium text-left"
           >
-            About DAU
+            Life at DAU
           </button>
           <button
-            onClick={() => scrollToSection("details")}
+            onClick={() => scrollToSection("about-us")}
             className="text-black hover:text-blue-700 font-medium text-left"
           >
-            Contact Us
+            About DAU
           </button>
         </nav>
       </div>
