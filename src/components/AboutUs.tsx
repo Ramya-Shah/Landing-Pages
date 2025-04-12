@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 const AboutUs = () => {
@@ -22,11 +23,13 @@ const AboutUs = () => {
           </div>
 
           {/* Right side: Image */}
-          <div className="md:w-3/5">
-            <img
+          <div className="md:w-1/3">
+            <Image
               src="/Aerial View-01.jpg"
               alt="DAU Aerial View"
-              className="w-full md:h-[400px] rounded-[16px] border-2 border-[#E7E7E7]"
+              width={500}
+              height={400}
+              className="w-full rounded-[16px] border-2 border-[#E7E7E7] object-cover"
             />
           </div>
         </div>
