@@ -15,7 +15,7 @@ import NotableAwards from "@/components/NotableAwards";
 export default function Home() {
     return (
         <main className="min-h-screen bg-white">
-            <Header />
+            <Header branchName="MSc.AA."/>
             <section id="hero-section">
                 <HeroSection />
             </section>
@@ -25,9 +25,9 @@ export default function Home() {
             <section id="notable-awards">
                 <NotableAwards />
             </section>
-            <section id="top-recruiters">
+            {/*<section id="top-recruiters">
                 <TopRecruiters />
-            </section>
+            </section>*/}
             {/* <section id="placement-stories">
         <PlacementStories />
       </section>

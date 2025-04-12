@@ -5,7 +5,11 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import { Menu, X } from "lucide-react";
 
-const Header = () => {
+interface HeaderProps {
+  branchName: string;
+}
+
+const Header:  React.FC<HeaderProps> = ({ branchName }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
@@ -90,8 +94,15 @@ const Header = () => {
               onClick={() => scrollToSection("hero-section")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              Admission
+              {branchName}
             </button>
+            <button
+              onClick={() => scrollToSection("faculty-highlights")}
+              className="text-black hover:text-blue-700 font-medium cursor-pointer">
+              Faculty
+            </button>
+
+            
             <button
               onClick={() => scrollToSection("top-recruiters")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
@@ -99,22 +110,16 @@ const Header = () => {
               Careers
             </button>
             <button
-              onClick={() => scrollToSection("campus-culture")}
-              className="text-black hover:text-blue-700 font-medium cursor-pointer"
-            >
-              Campus Life
-            </button>
-            <button
               onClick={() => scrollToSection("life-at-dau")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              About DAU
+              Life at Dau
             </button>
             <button
-              onClick={() => scrollToSection("contact-form")}
+              onClick={() => scrollToSection("about-us")}
               className="text-black hover:text-blue-700 font-medium cursor-pointer"
             >
-              Contact Us
+              About DAU
             </button>
           </nav>
             {/* Right side image */}
@@ -157,8 +162,13 @@ const Header = () => {
             onClick={() => scrollToSection("hero-section")}
             className="text-black hover:text-blue-700 font-medium text-left"
           >
-            Admission
+            {branchName}
           </button>
+          <button
+              onClick={() => scrollToSection("faculty-highlights")}
+              className="text-black hover:text-blue-700 font-medium text-left">
+              Faculty
+            </button>
           <button
             onClick={() => scrollToSection("top-recruiters")}
             className="text-black hover:text-blue-700 font-medium text-left"
@@ -166,22 +176,16 @@ const Header = () => {
             Careers
           </button>
           <button
-            onClick={() => scrollToSection("campus-culture")}
-            className="text-black hover:text-blue-700 font-medium text-left"
-          >
-            Campus Life
-          </button>
-          <button
             onClick={() => scrollToSection("life-at-dau")}
             className="text-black hover:text-blue-700 font-medium text-left"
           >
-            About DAU
+            Life at DAU
           </button>
           <button
-            onClick={() => scrollToSection("details")}
+            onClick={() => scrollToSection("about-us")}
             className="text-black hover:text-blue-700 font-medium text-left"
           >
-            Contact Us
+            About DAU
           </button>
         </nav>
       </div>
