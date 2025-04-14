@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ContactFormProvider } from "@/contexts/ContactFormContext";
+import FloatingApplyButton from "@/components/FloatingApplyButton";
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 
@@ -53,6 +54,7 @@ export default function RootLayout({
                 </head>
                 <body className={dmSans.className} suppressHydrationWarning>
                     {children}
+                    <FloatingApplyButton />
                     <Analytics />
                 </body>
             </html>
