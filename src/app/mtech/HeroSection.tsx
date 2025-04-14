@@ -63,7 +63,7 @@ const HeroSection = () => {
                     <div className="flex justify-center gap-4">
                         <Button
                             onClick={handleApplyNow}
-                            className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
+                            className="bg-red-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
                         >
                             Apply Now
                         </Button>

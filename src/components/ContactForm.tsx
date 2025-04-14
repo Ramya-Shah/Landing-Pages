@@ -338,7 +338,7 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                 <div className="pt-4">
                                     <Button
                                         type="submit"
-                                        className="w-full bg-amber-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
+                                        className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Apply Now'}
@@ -374,7 +374,7 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                 </p>
                                 <Button
                                     onClick={() => setShowConfirmation(false)}
-                                    className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-2 rounded-md"
+                                    className="bg-red-500 hover:bg-amber-600 text-white px-6 py-2 rounded-md"
                                 >
                                     Close
                                 </Button>
@@ -491,7 +491,7 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                             <div className="pt-4">
                                 <Button
                                     type="submit"
-                                    className="w-full bg-amber-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
+                                    className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? 'Submitting...' : 'Apply Now'}
