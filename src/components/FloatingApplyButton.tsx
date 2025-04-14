@@ -6,26 +6,16 @@ import { useContactFormContext } from '@/contexts/ContactFormContext';
 
 const FloatingApplyButton = () => {
   const { setIsPopupOpen } = useContactFormContext();
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isInHeroSection, setIsInHeroSection] = useState(true);
 
-  // Handle scroll behavior - hide when in hero section or scrolling down
+  // Updated scroll behavior - show button as soon as scrolling begins
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Check if we're in hero section
-      const heroSection = document.querySelector('[id$="hero-section"]') || 
-                          document.querySelector('[class*="hero"]');
-                          
-      const isInHero = heroSection && 
-        window.scrollY < (heroSection.getBoundingClientRect().top + window.scrollY + heroSection.getBoundingClientRect().height);
-      
-      setIsInHeroSection(isInHero);
-      
-      // Hide button in hero section or when scrolling down rapidly
-      setIsVisible((!isInHero) && (currentScrollY <= lastScrollY || currentScrollY < 100));
+      // Show button as soon as the user scrolls (even a little bit)
+      setIsVisible(currentScrollY > 50);
       setLastScrollY(currentScrollY);
     };
 
@@ -42,20 +32,17 @@ const FloatingApplyButton = () => {
 
   return (
     <AnimatePresence>
-      {isVisible && !isInHeroSection && (
+      {isVisible && (
         <motion.button
           initial={{ x: 100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
           transition={{ duration: 0.3 }}
           onClick={handleClick}
-          className="fixed bottom-8 right-8 bg-red-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-full shadow-lg flex items-center space-x-2 z-50"
-          style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+          className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-red-500 hover:bg-amber-600 text-black font-bold px-3 py-8 shadow-lg z-50"
+          style={{ writingMode: 'vertical-lr', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
         >
-          <span>Apply Now</span>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
+          Apply Now
         </motion.button>
       )}
     </AnimatePresence>
