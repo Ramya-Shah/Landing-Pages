@@ -12,10 +12,7 @@ const dmSans = DM_Sans({
   preload: true,
 });
 
-export const metadata: Metadata = {
-    title: "Dhirubhai Ambani University",
-    description: "Admissions Website for Dhirubhai Ambani University",
-};
+
 
 export default function RootLayout({
     children,

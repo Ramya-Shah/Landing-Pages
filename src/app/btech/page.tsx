@@ -12,6 +12,12 @@ import SuccessStories from "@/components/SuccessStories";
 import Placement from "./Placement";
 import FacultyHighlights from "@/components/FacultyHighlights";
 import NotableAwards from "@/components/NotableAwards";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "B.Tech. | Dhirubhai Ambani University",
+    description: "Admission Enquiry Website for B.Tech. at Dhirubhai Ambani University",
+};
 
 export default function Home() {
     return (

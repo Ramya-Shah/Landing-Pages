@@ -11,6 +11,13 @@ import AboutUs from "@/components/AboutUs";
 import SuccessStories from "@/components/SuccessStories";
 import FacultyHighlights from "@/components/FacultyHighlights";
 import NotableAwards from "@/components/NotableAwards";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Ph.D. | Dhirubhai Ambani University",
+    description: "Admission Enquiry Website for Ph.D. at Dhirubhai Ambani University",
+};
+
 
 export default function Home() {
     return (
