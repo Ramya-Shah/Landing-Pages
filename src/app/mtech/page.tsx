@@ -12,6 +12,13 @@ import SuccessStories from "@/components/SuccessStories";
 import Placement from "./Placement";
 import FacultyHighlights from "@/components/FacultyHighlights";
 import NotableAwards from "@/components/NotableAwards";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "M.Tech. in (ICT) | Dhirubhai Ambani University",
+    description: "Admission Enquiry Website for M.Tech in ICT at Dhirubhai Ambani University",
+};
+
 
 export default function Home() {
     return (
