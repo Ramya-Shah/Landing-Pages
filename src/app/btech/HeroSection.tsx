@@ -76,7 +76,7 @@ const HeroSection = () => {
                     className="bg-white p-6 rounded-lg text-center mt-20"
           >
             <h2 className="text-2xl font-semibold mb-16">
-              Specializations offered under{" "}
+              Programs offered under{" "}
               <span className="bg-gradient-to-r from-[#EF4023] to-[#FCBB4D] text-white px-4 py-1 rounded-lg">
                 BTech
               </span>
