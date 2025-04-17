@@ -12,6 +12,13 @@ import SuccessStories from "@/components/SuccessStories";
 import Placement from "./Placement";
 import FacultyHighlights from "@/components/FacultyHighlights";
 import NotableAwards from "@/components/NotableAwards";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "M.Sc. IT | Dhirubhai Ambani University",
+    description: "Admission Enquiry Website for MSc.IT. at Dhirubhai Ambani University",
+};
+
 
 export default function Home() {
     return (
