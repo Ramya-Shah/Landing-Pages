@@ -33,7 +33,7 @@ const Placement: React.FC = () => {
                                 text: "text-blue-900",
                             },
                             {
-                                title: "16. LPA",
+                                title: "16 LPA",
                                 subtitle: "Highest Placement",
                                 bg: "bg-red-600",
                                 text: "text-white",
