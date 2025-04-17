@@ -13,8 +13,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-    title: "M-Tech ICT - Dhirubhai Ambani University",
-    description: "MTech ICT program at Dhirubhai Ambani University",
+    title: "Dhirubhai Ambani University",
+    description: "Admissions Website for Dhirubhai Ambani University",
 };
 
 export default function RootLayout({

@@ -78,7 +78,7 @@ const HeroSection = () => {
             <h2 className="text-2xl font-semibold mb-16">
               Specializations offered under{" "}
               <span className="bg-gradient-to-r from-[#EF4023] to-[#FCBB4D] text-white px-4 py-1 rounded-lg">
-                BTech ICT
+                BTech
               </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
