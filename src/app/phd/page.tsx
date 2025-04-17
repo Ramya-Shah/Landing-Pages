@@ -46,6 +46,9 @@ export default function Home() {
             <section id="about-us">
                 <AboutUs />
             </section>
+            {/* <section id="contact-form">
+                <CrmContact />
+            </section> */}
             <section id="contact-form">
                 <ContactForm redirectUrl="https://www.daiict.ac.in/admission-phd"/>
             </section>

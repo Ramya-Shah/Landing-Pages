@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface Company {
   name: string;
@@ -53,10 +54,12 @@ const TopRecruiters: React.FC = () => {
                 key={index}
                 className="min-w-[140px] h-24 flex items-center justify-center border rounded-lg p-4 bg-white shadow-sm"
               >
-                <img
+                <Image
                   src={company.logo}
                   alt={company.name}
                   className={`${company.className} object-contain`}
+                  width={112}
+                  height={40}
                 />
               </div>
             ))}

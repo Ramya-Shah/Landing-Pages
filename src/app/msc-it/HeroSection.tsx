@@ -79,9 +79,16 @@ const HeroSection = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.5 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="my-8"
+                        className="my-8 relative"
                     >
-                        <img src="./msc-it.png" alt="Decorative Path" />
+                        <Image 
+                            src="/msc-it.png" 
+                            alt="Decorative Path"
+                            width={1000}
+                            height={800}
+                            layout="responsive"
+                            priority
+                        />
                     </motion.div>
                 </div>
 

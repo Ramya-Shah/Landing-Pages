@@ -78,15 +78,22 @@ const HeroSection = () => {
           </motion.div>
 
           {/* Animated image */}
-          <div className="mt-[100px] md:mt-[000px]">
+          <div className="md:mt-[50px]">
             <motion.div
               initial={{ opacity: 0.5, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="my-8"
+              className="my-8 relative w-full"
             >
-              <img src="./msc-aa.png" alt="Decorative Path" />
+              <Image
+                src="/msc-aa.png"
+                alt="Decorative Path"
+                width={1000}
+                height={800}
+                layout="responsive"
+                priority
+              />
             </motion.div>
           </div>
 

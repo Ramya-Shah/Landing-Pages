@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
+import Image from "next/image";
 
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -108,7 +109,15 @@ const HeroSection = () => {
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="my-8"
                 >
-                    <img src="./mtech.png" alt="Decorative Path" />
+                    <Image 
+                        src="/mtech.png" 
+                        alt="Decorative Path"
+                        width={800}
+                        height={450}
+                        quality={100}
+                        className="w-full h-auto"
+                        priority
+                    />
                 </motion.div>
 
                 {/* Animated grid with statistic cards and logo */}
