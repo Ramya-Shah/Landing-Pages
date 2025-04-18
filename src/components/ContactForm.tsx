@@ -11,6 +11,7 @@ interface FormData {
     email: string;
     phone: string;
     countryCode: string;
+    manualCountryCode: string; // Added for "Other" option
     state: string;
 }
 
@@ -36,6 +37,7 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
         email: '',
         phone: '',
         countryCode: 'INR(+91)',
+        manualCountryCode: '', // Added for "Other" option
         state: ''
     });
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -145,11 +147,18 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
         setSubmitMessage({ text: '', isError: false });
         setShowConfirmation(false);
 
+        // Prepare submission data with proper country code handling
+        const submissionData = {
+            ...formData,
+            // Use the manual country code if "OTHER" is selected
+            countryCode: formData.countryCode === 'OTHER' ? formData.manualCountryCode : formData.countryCode
+        };
+
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(submissionData)
             });
 
             const responseData = await response.json();
@@ -164,6 +173,7 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                 email: '',
                 phone: '',
                 countryCode: 'INR(+91)',
+                manualCountryCode: '', // Added for "Other" option
                 state: ''
             });
 
@@ -270,18 +280,48 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                             value={formData.countryCode}
                                             onChange={handleInputChange}
                                         >
-                                            <option>INR(+91)</option>
+                                            <option value="INR(+91)">India (+91)</option>
+                                            <option value="USA(+1)">USA (+1)</option>
+                                            <option value="UK(+44)">UK (+44)</option>
+                                            <option value="UAE(+971)">UAE (+971)</option>
+                                            <option value="CAN(+1)">Canada (+1)</option>
+                                            <option value="AUS(+61)">Australia (+61)</option>
+                                            <option value="OTHER">Other (Manual)</option>
                                         </select>
                                         <span className="px-2 text-gray-500">|</span>
-                                        <Input
-                                            type="tel"
-                                            name="phone"
-                                            value={formData.phone}
-                                            onChange={handleInputChange}
-                                            placeholder="12345 67890"
-                                            className="w-full p-3 outline-none"
-                                            required
-                                        />
+                                        {formData.countryCode === 'OTHER' ? (
+                                            <div className="flex items-center w-full">
+                                                <Input
+                                                    type="text"
+                                                    name="manualCountryCode"
+                                                    value={formData.manualCountryCode}
+                                                    onChange={handleInputChange}
+                                                    placeholder="e.g. +65"
+                                                    className="w-24 p-3 outline-none"
+                                                    required
+                                                />
+                                                <span className="px-2 text-gray-500">|</span>
+                                                <Input
+                                                    type="tel"
+                                                    name="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Phone number"
+                                                    className="w-full p-3 outline-none"
+                                                    required
+                                                />
+                                            </div>
+                                        ) : (
+                                            <Input
+                                                type="tel"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleInputChange}
+                                                placeholder="12345 67890"
+                                                className="w-full p-3 outline-none"
+                                                required
+                                            />
+                                        )}
                                     </div>
                                     {renderErrorMessage('phone')}
                                 </div>
@@ -422,18 +462,48 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                         value={formData.countryCode}
                                         onChange={handleInputChange}
                                     >
-                                        <option>INR(+91)</option>
+                                        <option value="INR(+91)">India (+91)</option>
+                                        <option value="USA(+1)">USA (+1)</option>
+                                        <option value="UK(+44)">UK (+44)</option>
+                                        <option value="UAE(+971)">UAE (+971)</option>
+                                        <option value="CAN(+1)">Canada (+1)</option>
+                                        <option value="AUS(+61)">Australia (+61)</option>
+                                        <option value="OTHER">Other (Manual)</option>
                                     </select>
                                     <span className="px-2 text-gray-500">|</span>
-                                    <Input
-                                        type="tel"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleInputChange}
-                                        placeholder="12345 67890"
-                                        className="w-full p-3 outline-none"
-                                        required
-                                    />
+                                    {formData.countryCode === 'OTHER' ? (
+                                        <div className="flex items-center w-full">
+                                            <Input
+                                                type="text"
+                                                name="manualCountryCode"
+                                                value={formData.manualCountryCode}
+                                                onChange={handleInputChange}
+                                                placeholder="e.g. +65"
+                                                className="w-24 p-3 outline-none"
+                                                required
+                                            />
+                                            <span className="px-2 text-gray-500">|</span>
+                                            <Input
+                                                type="tel"
+                                                name="phone"
+                                                value={formData.phone}
+                                                onChange={handleInputChange}
+                                                placeholder="Phone number"
+                                                className="w-full p-3 outline-none"
+                                                required
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Input
+                                            type="tel"
+                                            name="phone"
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            placeholder="12345 67890"
+                                            className="w-full p-3 outline-none"
+                                            required
+                                        />
+                                    )}
                                 </div>
                                 {renderErrorMessage('phone')}
                             </div>
