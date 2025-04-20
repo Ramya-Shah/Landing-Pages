@@ -6,13 +6,62 @@ import { Button } from "@/components/ui/button";
 import Image from "next/legacy/image";
 import { useContactFormContext } from '@/contexts/ContactFormContext';
 
+// Add this object with country-specific states/territories
+const countryStates = {
+    'INR(+91)': [
+        'Andaman and Nicobar Islands', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam',
+        'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra and Nagar Haveli and Daman and Diu',
+        'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu and Kashmir',
+        'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh',
+        'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha',
+        'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana',
+        'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+    ],
+    'USA(+1)': [
+        'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+        'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+        'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+        'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+        'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+        'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+        'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+        'Wisconsin', 'Wyoming', 'District of Columbia', 'Puerto Rico', 'Guam', 'American Samoa',
+        'U.S. Virgin Islands', 'Northern Mariana Islands'
+    ],
+    'UK(+44)': [
+        'England', 'Scotland', 'Wales', 'Northern Ireland', 
+        'Bedfordshire', 'Berkshire', 'Bristol', 'Buckinghamshire', 'Cambridgeshire',
+        'Cheshire', 'Cornwall', 'Cumbria', 'Derbyshire', 'Devon', 'Dorset', 'Durham',
+        'East Sussex', 'Essex', 'Gloucestershire', 'Greater London', 'Greater Manchester',
+        'Hampshire', 'Hertfordshire', 'Kent', 'Lancashire', 'Leicestershire', 'Lincolnshire',
+        'Merseyside', 'Norfolk', 'North Yorkshire', 'Northamptonshire', 'Nottinghamshire',
+        'Oxfordshire', 'Shropshire', 'Somerset', 'South Yorkshire', 'Staffordshire', 'Suffolk',
+        'Surrey', 'Tyne and Wear', 'Warwickshire', 'West Midlands', 'West Sussex',
+        'West Yorkshire', 'Wiltshire', 'Worcestershire'
+    ],
+    'UAE(+971)': [
+        'Abu Dhabi', 'Ajman', 'Dubai', 'Fujairah', 'Ras Al Khaimah', 'Sharjah', 'Umm Al Quwain'
+    ],
+    'CAN(+1)': [
+        'Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador',
+        'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Ontario', 'Prince Edward Island',
+        'Quebec', 'Saskatchewan', 'Yukon'
+    ],
+    'AUS(+61)': [
+        'Australian Capital Territory', 'New South Wales', 'Northern Territory', 'Queensland',
+        'South Australia', 'Tasmania', 'Victoria', 'Western Australia'
+    ],
+    'OTHER': [] // Empty for manual input
+};
+
 interface FormData {
     name: string;
     email: string;
     phone: string;
     countryCode: string;
-    manualCountryCode: string; // Added for "Other" option
+    manualCountryCode: string; // For "Other" option
     state: string;
+    manualState: string; // Add this for manual state entry
 }
 
 interface SubmitMessage {
@@ -28,17 +77,18 @@ interface ValidationErrors {
 }
 interface ContactFormProps {
     redirectUrl?: string;
-  }
+}
 
-const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category" } ) => {
+const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category" }) => {
     const { isPopupOpen, setIsPopupOpen } = useContactFormContext();
     const [formData, setFormData] = useState<FormData>({
         name: '',
         email: '',
         phone: '',
         countryCode: 'INR(+91)',
-        manualCountryCode: '', // Added for "Other" option
-        state: ''
+        manualCountryCode: '',
+        state: '',
+        manualState: '' // Initialize the new field
     });
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [submitMessage, setSubmitMessage] = useState<SubmitMessage>({ text: '', isError: false });
@@ -49,6 +99,15 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
         phone: '',
         state: ''
     });
+    const [isBTechPage, setIsBTechPage] = useState<boolean>(false);
+
+    // Detect if this is the BTech page based on URL
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const pathname = window.location.pathname;
+            setIsBTechPage(pathname.includes('/btech') || pathname === '/');
+        }
+    }, []);
 
     // Show popup when user visits the site (after a small delay)
     useEffect(() => {
@@ -102,12 +161,38 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
         }
     };
 
+    const getAvailableStates = () => {
+        if (!isBTechPage) {
+            // Only show Indian states for non-BTech pages
+            return countryStates['INR(+91)'];
+        }
+        return countryStates[formData.countryCode as keyof typeof countryStates] || [];
+    };
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+
+        // When country code changes, reset the state field if not available in new country
+        if (name === 'countryCode') {
+            const availableStates = countryStates[value as keyof typeof countryStates] || [];
+            if (!availableStates.includes(formData.state)) {
+                setFormData(prev => ({
+                    ...prev,
+                    [name]: value,
+                    state: '' // Reset state when country changes
+                }));
+            } else {
+                setFormData(prev => ({
+                    ...prev,
+                    [name]: value
+                }));
+            }
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
+        }
 
         // Validate on change and update errors
         const errorMessage = validateField(name, value);
@@ -147,11 +232,13 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
         setSubmitMessage({ text: '', isError: false });
         setShowConfirmation(false);
 
-        // Prepare submission data with proper country code handling
+        // Prepare submission data with proper country code and state handling
         const submissionData = {
             ...formData,
             // Use the manual country code if "OTHER" is selected
-            countryCode: formData.countryCode === 'OTHER' ? formData.manualCountryCode : formData.countryCode
+            countryCode: formData.countryCode === 'OTHER' ? formData.manualCountryCode : formData.countryCode,
+            // Use manual state if "OTHER" is selected
+            state: formData.countryCode === 'OTHER' ? formData.manualState : formData.state
         };
 
         try {
@@ -173,8 +260,9 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                 email: '',
                 phone: '',
                 countryCode: 'INR(+91)',
-                manualCountryCode: '', // Added for "Other" option
-                state: ''
+                manualCountryCode: '',
+                state: '',
+                manualState: '' // Reset manual state
             });
 
             // Set success message based on where data was saved
@@ -279,14 +367,19 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                             name="countryCode"
                                             value={formData.countryCode}
                                             onChange={handleInputChange}
+                                            disabled={!isBTechPage} // Disable for non-BTech pages
                                         >
                                             <option value="INR(+91)">India (+91)</option>
-                                            <option value="USA(+1)">USA (+1)</option>
-                                            <option value="UK(+44)">UK (+44)</option>
-                                            <option value="UAE(+971)">UAE (+971)</option>
-                                            <option value="CAN(+1)">Canada (+1)</option>
-                                            <option value="AUS(+61)">Australia (+61)</option>
-                                            <option value="OTHER">Other (Manual)</option>
+                                            {isBTechPage && (
+                                                <>
+                                                    <option value="USA(+1)">USA (+1)</option>
+                                                    <option value="UK(+44)">UK (+44)</option>
+                                                    <option value="UAE(+971)">UAE (+971)</option>
+                                                    <option value="CAN(+1)">Canada (+1)</option>
+                                                    <option value="AUS(+61)">Australia (+61)</option>
+                                                    <option value="OTHER">Other (Manual)</option>
+                                                </>
+                                            )}
                                         </select>
                                         <span className="px-2 text-gray-500">|</span>
                                         {formData.countryCode === 'OTHER' ? (
@@ -327,51 +420,32 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                 </div>
 
                                 <div>
-                                    <select
-                                        className={`w-full p-3 border rounded-md text-gray-400 bg-white ${errors.state ? 'border-red-500' : ''}`}
-                                        name="state"
-                                        value={formData.state}
-                                        onChange={handleInputChange}
-                                        required
-                                    >
-                                        <option value="">State/Union Territory</option>
-                                        <option>Andaman and Nicobar Islands</option>
-                                        <option>Andhra Pradesh</option>
-                                        <option>Arunachal Pradesh</option>
-                                        <option>Assam</option>
-                                        <option>Bihar</option>
-                                        <option>Chandigarh</option>
-                                        <option>Chhattisgarh</option>
-                                        <option>Dadra and Nagar Haveli and Daman and Diu</option>
-                                        <option>Delhi</option>
-                                        <option>Goa</option>
-                                        <option>Gujarat</option>
-                                        <option>Haryana</option>
-                                        <option>Himachal Pradesh</option>
-                                        <option>Jammu and Kashmir</option>
-                                        <option>Jharkhand</option>
-                                        <option>Karnataka</option>
-                                        <option>Kerala</option>
-                                        <option>Ladakh</option>
-                                        <option>Lakshadweep</option>
-                                        <option>Madhya Pradesh</option>
-                                        <option>Maharashtra</option>
-                                        <option>Manipur</option>
-                                        <option>Meghalaya</option>
-                                        <option>Mizoram</option>
-                                        <option>Nagaland</option>
-                                        <option>Odisha</option>
-                                        <option>Puducherry</option>
-                                        <option>Punjab</option>
-                                        <option>Rajasthan</option>
-                                        <option>Sikkim</option>
-                                        <option>Tamil Nadu</option>
-                                        <option>Telangana</option>
-                                        <option>Tripura</option>
-                                        <option>Uttar Pradesh</option>
-                                        <option>Uttarakhand</option>
-                                        <option>West Bengal</option>
-                                    </select>
+                                    {formData.countryCode === 'OTHER' ? (
+                                        <Input
+                                            type="text"
+                                            name="manualState"
+                                            value={formData.manualState}
+                                            onChange={handleInputChange}
+                                            placeholder="Enter your state/region"
+                                            className={`w-full p-3 border rounded-md ${errors.state ? 'border-red-500' : ''}`}
+                                            required
+                                        />
+                                    ) : (
+                                        <select
+                                            className={`w-full p-3 border rounded-md text-gray-400 bg-white ${errors.state ? 'border-red-500' : ''}`}
+                                            name="state"
+                                            value={formData.state}
+                                            onChange={handleInputChange}
+                                            required
+                                        >
+                                            <option value="">State/Territory</option>
+                                            {getAvailableStates().map((state, index) => (
+                                                <option key={index} value={state}>
+                                                    {state}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    )}
                                     {renderErrorMessage('state')}
                                 </div>
 
@@ -461,14 +535,19 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                                         name="countryCode"
                                         value={formData.countryCode}
                                         onChange={handleInputChange}
+                                        disabled={!isBTechPage} // Disable for non-BTech pages
                                     >
                                         <option value="INR(+91)">India (+91)</option>
-                                        <option value="USA(+1)">USA (+1)</option>
-                                        <option value="UK(+44)">UK (+44)</option>
-                                        <option value="UAE(+971)">UAE (+971)</option>
-                                        <option value="CAN(+1)">Canada (+1)</option>
-                                        <option value="AUS(+61)">Australia (+61)</option>
-                                        <option value="OTHER">Other (Manual)</option>
+                                        {isBTechPage && (
+                                            <>
+                                                <option value="USA(+1)">USA (+1)</option>
+                                                <option value="UK(+44)">UK (+44)</option>
+                                                <option value="UAE(+971)">UAE (+971)</option>
+                                                <option value="CAN(+1)">Canada (+1)</option>
+                                                <option value="AUS(+61)">Australia (+61)</option>
+                                                <option value="OTHER">Other (Manual)</option>
+                                            </>
+                                        )}
                                     </select>
                                     <span className="px-2 text-gray-500">|</span>
                                     {formData.countryCode === 'OTHER' ? (
@@ -509,54 +588,34 @@ const ContactForm: React.FC<ContactFormProps> = ( { redirectUrl = "https://www.d
                             </div>
 
                             <div>
-                                <select
-                                    className={`w-full p-3 border rounded-md text-gray-400 bg-white ${errors.state ? 'border-red-500' : ''}`}
-                                    name="state"
-                                    value={formData.state}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="">State/Union Territory</option>
-                                    <option>Andaman and Nicobar Islands</option>
-                                    <option>Andhra Pradesh</option>
-                                    <option>Arunachal Pradesh</option>
-                                    <option>Assam</option>
-                                    <option>Bihar</option>
-                                    <option>Chandigarh</option>
-                                    <option>Chhattisgarh</option>
-                                    <option>Dadra and Nagar Haveli and Daman and Diu</option>
-                                    <option>Delhi</option>
-                                    <option>Goa</option>
-                                    <option>Gujarat</option>
-                                    <option>Haryana</option>
-                                    <option>Himachal Pradesh</option>
-                                    <option>Jammu and Kashmir</option>
-                                    <option>Jharkhand</option>
-                                    <option>Karnataka</option>
-                                    <option>Kerala</option>
-                                    <option>Ladakh</option>
-                                    <option>Lakshadweep</option>
-                                    <option>Madhya Pradesh</option>
-                                    <option>Maharashtra</option>
-                                    <option>Manipur</option>
-                                    <option>Meghalaya</option>
-                                    <option>Mizoram</option>
-                                    <option>Nagaland</option>
-                                    <option>Odisha</option>
-                                    <option>Puducherry</option>
-                                    <option>Punjab</option>
-                                    <option>Rajasthan</option>
-                                    <option>Sikkim</option>
-                                    <option>Tamil Nadu</option>
-                                    <option>Telangana</option>
-                                    <option>Tripura</option>
-                                    <option>Uttar Pradesh</option>
-                                    <option>Uttarakhand</option>
-                                    <option>West Bengal</option>
-                                </select>
+                                {formData.countryCode === 'OTHER' ? (
+                                    <Input
+                                        type="text"
+                                        name="manualState"
+                                        value={formData.manualState}
+                                        onChange={handleInputChange}
+                                        placeholder="Enter your state/region"
+                                        className={`w-full p-3 border rounded-md ${errors.state ? 'border-red-500' : ''}`}
+                                        required
+                                    />
+                                ) : (
+                                    <select
+                                        className={`w-full p-3 border rounded-md text-gray-400 bg-white ${errors.state ? 'border-red-500' : ''}`}
+                                        name="state"
+                                        value={formData.state}
+                                        onChange={handleInputChange}
+                                        required
+                                    >
+                                        <option value="">State/Territory</option>
+                                        {getAvailableStates().map((state, index) => (
+                                            <option key={index} value={state}>
+                                                {state}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
                                 {renderErrorMessage('state')}
                             </div>
-
 
                             <div className="pt-4">
                                 <Button
