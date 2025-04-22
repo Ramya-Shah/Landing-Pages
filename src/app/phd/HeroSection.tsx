@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+// import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/legacy/image";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
+// import PopupWidget from "./temp";
+// import CrmContact from "./ContactForm";
 
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -27,7 +29,9 @@ const HeroSection = () => {
     const handleApplyNow = () => {
         // Open the popup contact form instead of scrolling
         setIsPopupOpen(true);
+
     };
+    
 
     return (
       <section className="relative bg-white md:py-12 overflow-hidden">
@@ -70,7 +74,9 @@ const HeroSection = () => {
 
             <div className="flex justify-center gap-4">
               <Button
-                onClick={handleApplyNow}
+                onClick={() => {
+                  handleApplyNow();
+                }}
                 className="bg-red-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
               >
                 Apply Now

@@ -12,6 +12,7 @@ import SuccessStories from "@/components/SuccessStories";
 import FacultyHighlights from "@/components/FacultyHighlights";
 import NotableAwards from "@/components/NotableAwards";
 import { Metadata } from "next";
+import CrmContact from "./ContactForm";
 
 export const metadata: Metadata = {
     title: "Ph.D. | Dhirubhai Ambani University",
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <main className="min-h-screen bg-white">
-            <Header branchName="Ph.D."/>
+            <Header branchName="Ph.D." />
             <section id="hero-section">
                 <HeroSection />
             </section>
@@ -53,9 +54,6 @@ export default function Home() {
             <section id="about-us">
                 <AboutUs />
             </section>
-            {/* <section id="contact-form">
-                <CrmContact />
-            </section> */}
             <section id="contact-form">
                 <ContactForm redirectUrl="https://www.daiict.ac.in/admission-phd"/>
             </section>

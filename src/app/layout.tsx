@@ -6,10 +6,10 @@ import FloatingApplyButton from "@/components/FloatingApplyButton";
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 
-const dmSans = DM_Sans({ 
-  subsets: ["latin"],
-  display: 'swap',
-  preload: true,
+const dmSans = DM_Sans({
+    subsets: ["latin"],
+    display: 'swap',
+    preload: true,
 });
 
 
@@ -39,9 +39,9 @@ export default function RootLayout({
                         `}
                     </Script>
                     <noscript>
-                        <img 
-                            height="1" 
-                            width="1" 
+                        <img
+                            height="1"
+                            width="1"
                             style={{ display: 'none' }}
                             src="https://www.facebook.com/tr?id=1014963587394955&ev=PageView&noscript=1"
                             alt=""
