@@ -119,7 +119,7 @@ const HeroSection = () => {
               hidden: { opacity: 0, y: 20 },
             }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
               {[
                 {
                   title: "25 Years",
@@ -159,10 +159,10 @@ const HeroSection = () => {
                   </p>
                 </motion.div>
               ))}
-            </div>
+            </div> */}
 
             {/* Animated DAU Logo */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
@@ -170,7 +170,7 @@ const HeroSection = () => {
               className=" hidden md:block"
             >
               <img src="/DAU_Logo.png" alt="DAU Logo" />
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
       </section>
