@@ -33,9 +33,11 @@ export default function Home() {
             <section id="notable-awards">
                 <NotableAwards />
             </section>
+            {/*
             <section id="top-recruiters">
                 <TopRecruiters />
             </section>
+            */}
             {/* <section id="placement-stories">
         <PlacementStories />
       </section>
