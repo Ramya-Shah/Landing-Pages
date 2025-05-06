@@ -83,26 +83,6 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        {/* Animated image */}
-        <div className="mt-[100px] md:mt-[000px]">
-          <motion.div
-            initial={{ opacity: 0.5, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="my-8 relative"
-          >
-            <Image
-              src="/mdes.png"
-              alt="Decorative Path"
-              width={1000}
-              height={800}
-              layout="responsive"
-              quality={90}
-            />
-          </motion.div>
-        </div>
-
         <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -132,6 +112,26 @@ const HeroSection = () => {
                 ))}
             </div>
           </motion.div>
+
+        {/* Animated image */}
+        <div className="mt-[100px] md:mt-[000px]">
+          <motion.div
+            initial={{ opacity: 0.5, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="my-8 relative"
+          >
+            <Image
+              src="/mdes.png"
+              alt="Decorative Path"
+              width={1000}
+              height={800}
+              layout="responsive"
+              quality={90}
+            />
+          </motion.div>
+        </div>
 
       </div>
     </section>
