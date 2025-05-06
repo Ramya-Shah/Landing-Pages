@@ -96,7 +96,7 @@ const HeroSection = () => {
               src="/mdes.png"
               alt="Decorative Path"
               width={1000}
-              height={700}
+              height={800}
               layout="responsive"
               quality={90}
             />
