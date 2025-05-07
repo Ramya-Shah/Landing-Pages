@@ -72,40 +72,36 @@ const HeroSection = () => {
             Master of Design (M.Des)
           </h1>
           <div className="py-8 px-4">
-          <div className="max-w-md mx-auto bg-white rounded-2xl p-6">
-      <h2 className="text-2xl md:text-5xl font-bold text-blue-700 mb-6">
-        Specializations
-      </h2>
-      <ul className="list-inside space-y-3 text-gray-700 text-2xl md:text-5xl font-bold mb-6">
-        <li className="relative text-orange-600 drop-shadow-[0_0_8px_rgba(255,165,0,0.8)] animate-pulse">
-          Intelligent User Experience Design (IUxD)
-          <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
-            NEW
-          </span>
-        </li>
-        <li className="text-red-600 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] animate-pulse">
-          Communication Design (CD)
-        </li>
-      </ul>
-    </div>
+            <div className="max-w-md mx-auto bg-white rounded-2xl p-6">
+              <h2 className="text-2xl md:text-5xl font-bold text-blue-700 mb-6">
+                Specializations
+              </h2>
+              <ul className="list-inside space-y-3 text-gray-700 text-2xl md:text-5xl font-bold mb-6">
+                <li className="relative text-orange-600 drop-shadow-[0_0_8px_rgba(255,165,0,0.8)] animate-pulse">
+                  Intelligent User Experience Design (IUxD)
+                  <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+                    NEW
+                  </span>
+                </li>
+                <li className="text-red-600 drop-shadow-[0_0_8px_rgba(255,0,0,0.8)] animate-pulse">
+                  Communication Design (CD)
+                </li>
+              </ul>
+            </div>
           </div>
           <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">
-            The M.Des. at DAU is a two-year interdisciplinary program that
-            blends technology,
+            The M.Des. at DAU is a two-year transdisciplinary program that
+            blends design,
             <br />
-            design, and strategy. With specializations in Communication Design
-            and
+            technology and strategy. With specialization in Intelligent User
             <br />
-            Intelligent User Experience Design (IUxD), it emphasizes hands-on
-            projects,
+            Experience design(IUxD) and Communication Design(CD), emphasizes
+            Design thinking, Human Centered Design, AI, Interaction design,
             <br />
-            human-centered thinking, and emerging fields like UI/UX, motion
-            graphics, and
+            UI, UX research, Experience design, HCI, Motion graphics and
+            Immersive media,
             <br />
-            immersive media, preparing students for impactful careers in design
-            and
-            <br />
-            innovation.
+            preparing students for impactful careers in design and innovation.
           </p>
 
           <div className="flex justify-center gap-4">
@@ -132,20 +128,21 @@ const HeroSection = () => {
             </span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {["Intelligent User Exeprience Design (IUxD)", "Communication Design (CD)"].map(
-              (specialization, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                  className="border-l-[1px] border-r-[1px] border-b-[1px] border-[#EF4023] p-4 rounded-lg shadow-md bg-gray-100 hover:bg-red-600 group"
-                >
-                  <span className="group-hover:text-white text-xl">
-                    {specialization}
-                  </span>
-                </motion.div>
-              )
-            )}
+            {[
+              "Intelligent User Exeprience Design (IUxD)",
+              "Communication Design (CD)",
+            ].map((specialization, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+                className="border-l-[1px] border-r-[1px] border-b-[1px] border-[#EF4023] p-4 rounded-lg shadow-md bg-gray-100 hover:bg-red-600 group"
+              >
+                <span className="group-hover:text-white text-xl">
+                  {specialization}
+                </span>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
 
