@@ -71,8 +71,7 @@ const HeroSection = () => {
           <h1 className="text-3xl md:text-5xl font-bold text-blue-900 mb-4">
             Master of Design (M.Des)
           </h1>
-          <div className="py-8 px-4">
-            {/* Center the card horizontally, but let it sit nearer the top */}
+          {/*<div className="py-8 px-4">
             <div className="max-w-md mx-auto bg-white rounded-2xl p-6">
               <h2 className="text-2xl md:text-5xl font-bold text-blue-700 mb-6">
                 Specializations
@@ -82,7 +81,7 @@ const HeroSection = () => {
                 <li>Communication Design</li>
               </ul>
             </div>
-          </div>
+          </div> */}
           <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">
             The M.Des. at DAU is a two-year interdisciplinary program that
             blends technology,
@@ -126,7 +125,7 @@ const HeroSection = () => {
             </span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {["Intelligent UX Design", "Communication Design"].map(
+            {["Intelligent User Exeprience Design", "Communication Design"].map(
               (specialization, index) => (
                 <motion.div
                   key={index}
@@ -134,7 +133,7 @@ const HeroSection = () => {
                   transition={{ duration: 0.2 }}
                   className="border-l-[1px] border-r-[1px] border-b-[1px] border-[#EF4023] p-4 rounded-lg shadow-md bg-gray-100 hover:bg-red-600 group"
                 >
-                  <span className="group-hover:text-white">
+                  <span className="group-hover:text-white text-lg">
                     {specialization}
                   </span>
                 </motion.div>
