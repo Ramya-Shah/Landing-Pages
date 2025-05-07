@@ -1,31 +1,30 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useContactFormContext } from '@/contexts/ContactFormContext';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useContactFormContext } from "@/contexts/ContactFormContext";
+import { usePathname } from "next/navigation";
 
-const FloatingApplyButton = () => {
+const FloatingApplyButton: React.FC = () => {
+  const pathname = usePathname();
   const { setIsPopupOpen } = useContactFormContext();
   const [isVisible, setIsVisible] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Updated scroll behavior - show button as soon as scrolling begins
+  if (pathname === "/") return null;
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
-      // Show button as soon as the user scrolls (even a little bit)
       setIsVisible(currentScrollY > 50);
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Check initial position
-
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Open the contact form popup when clicked
   const handleClick = () => {
     setIsPopupOpen(true);
   };
@@ -40,7 +39,7 @@ const FloatingApplyButton = () => {
           transition={{ duration: 0.3 }}
           onClick={handleClick}
           className="fixed top-1/2 right-0 transform -translate-y-1/2 bg-red-500 hover:bg-amber-600 text-black font-bold px-3 py-8 shadow-lg z-50"
-          style={{ writingMode: 'vertical-lr', boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
+          style={{ writingMode: "vertical-lr", boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}
         >
           Apply Now
         </motion.button>
