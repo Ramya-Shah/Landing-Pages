@@ -13,20 +13,24 @@ const programs = ["B.Tech", "M.Tech", "M.Sc.", "M.Des", "Ph.D."];
 const ProgramNav: React.FC<ProgramNavProps> = ({ bgText }) => {
   return (
     <div className="relative overflow-hidden py-16 px-4">
-      {/* Background text */}
-      <span
-        className="
-          pointer-events-none select-none
-          absolute inset-0
-          flex items-center justify-center
-          text-[10rem] md:text-[10rem]
-          font-extrabold uppercase
-          text-gray-100 leading-none
-          whitespace-nowrap
-        "
-      >
-        {bgText}
-      </span>
+      {/* Background text (wrapped on mobile, smaller size) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+        <span
+          className="
+            block w-full h-full
+            flex items-center justify-center
+            text-[4.25rem] sm:text-[8rem] md:text-[12rem]
+            font-anton uppercase
+            text-gray-200 leading-tight
+            whitespace-normal text-center
+            md:scale-y-100 md:scale-x-100
+            scale-y-[140%] scale-x-[130%]
+          "
+          
+        >
+          {bgText}
+        </span>
+      </div>
 
       {/* Animated nav container */}
       <motion.div

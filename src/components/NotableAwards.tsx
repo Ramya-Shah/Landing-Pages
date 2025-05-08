@@ -9,7 +9,7 @@ const leftAwards = [
     subtitle: "by Govt. of India",
   },
   {
-    title: "ISCA & APSIPA Distinguished Lecture",
+    title: "ISCA & APSIPA Distinguished Lecturer",
     subtitle:
       "by Indian Science Congress Association & Asia-Pacific Signal and Information Processing Association",
   },
