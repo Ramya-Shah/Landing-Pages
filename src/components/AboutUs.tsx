@@ -12,13 +12,18 @@ const AboutUs = () => {
               About Dhirubhai Ambani University
             </h2>
             <p className="text-gray-700 mb-4">
-            Dhirubhai Ambani University  offers a vibrant campus culture where academics and extracurriculars thrive. Student-led clubs, technical fests, and cultural events foster creativity and collaboration.
+            Dhirubhai Ambani University (formerly DA-IICT) is a premier institution in the field of
+            Information and Communication Technology, known for academic excellence, cutting-edge
+            research, and industry-oriented programs.
             </p>
             <p className="text-gray-700 mb-4">
-            From music and dance to robotics and coding, Dhirubhai Ambani University ensures every student finds their passion. Workshops, hackathons, and sports tournaments keep the campus dynamic.
+            Accredited with a NAAC ‘A+’ grade and recognized as a Centre of Excellence by the
+            Government of Gujarat, the university blends theoretical foundations with hands-on learning
+            to prepare students for real-world impact.
             </p>
             <p className="text-gray-700">
-            With top-notch facilities and lively festivals, Dhirubhai Ambani University nurtures friendships, leadership, and personal growth in a welcoming environment.
+            With over 24 years of academic legacy, DAU is committed to nurturing innovative minds and
+            future leaders across undergraduate, postgraduate, and doctoral programs.
             </p>
           </div>
 
