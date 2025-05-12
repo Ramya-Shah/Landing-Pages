@@ -28,13 +28,13 @@ const Placement: React.FC = () => {
                         {[
                             {
                                 title: "8.43 LPA",
-                                subtitle: "Average Placement",
+                                subtitle: "Average PG Placement",
                                 bg: "bg-white",
                                 text: "text-blue-900",
                             },
                             {
                                 title: "45.03 LPA",
-                                subtitle: "Highest Placement",
+                                subtitle: "Highest PG Placement",
                                 bg: "bg-red-600",
                                 text: "text-white",
                             },
