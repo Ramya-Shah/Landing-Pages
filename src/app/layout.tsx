@@ -34,6 +34,15 @@ export default function RootLayout({
             fbq('init', '1014963587394955');
             fbq('track', 'PageView');`}
           </Script>
+
+          <Script strategy="afterInteractive" id="clarity-script">
+            {`(function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/ributx3rdu";
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "ributx3rdu");`}
+          </Script>
+
           <noscript>
             <img
               height="1"
