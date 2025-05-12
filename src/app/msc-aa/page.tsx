@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import HeroSection from "./HeroSection";
 import TopFaculty from "@/components/TopFaculty";
+import Placement from "./Placement";
 import TopRecruiters from "@/components/TopRecruiters";
 import PlacementStories from "@/components/PlacementStories";
 import CampusCulture from "@/components/CampusCulture";
@@ -26,6 +27,10 @@ export default function Home() {
             <section id="hero-section">
                 <HeroSection />
             </section>
+            <section id="placement">
+                <Placement />
+            </section>
+                
             <section id="faculty-highlights">
                 <FacultyHighlights />
             </section>

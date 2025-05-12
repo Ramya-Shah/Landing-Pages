@@ -27,13 +27,13 @@ const Placement: React.FC = () => {
                     <div className="flex flex-col space-y-6 gap-8 h-[400px] md:h-[400px] w-[80%] md:w-[90%] mx-auto">
                         {[
                             {
-                                title: "5.5 LPA",
+                                title: "8.43 LPA",
                                 subtitle: "Median Placement",
                                 bg: "bg-white",
                                 text: "text-blue-900",
                             },
                             {
-                                title: "16 LPA",
+                                title: "45.03 LPA",
                                 subtitle: "Highest Placement",
                                 bg: "bg-red-600",
                                 text: "text-white",
