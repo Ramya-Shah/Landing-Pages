@@ -28,7 +28,7 @@ const Placement: React.FC = () => {
                         {[
                             {
                                 title: "6 LPA",
-                                subtitle: "Median Placement",
+                                subtitle: "Average Placement",
                                 bg: "bg-white",
                                 text: "text-blue-900",
                             },
