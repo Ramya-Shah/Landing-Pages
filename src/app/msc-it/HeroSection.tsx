@@ -39,7 +39,7 @@ const HeroSection = () => {
                 />
             </div> */}
 
-            <div className="container mx-auto relative z-10 pb-48">
+            <div className="container mx-auto relative z-10 pb-4">
                 {/* Animated text content */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

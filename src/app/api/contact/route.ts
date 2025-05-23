@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     // Parse form data
     const formData = await request.json();
-    console.log("Received form data:", formData);
+    // console.log("Received form data:", formData);
     
     // Get the referer from request headers and extract the pathname
     const referer = request.headers.get('referer') || '';
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 async function addToGoogleSheetViaAppScript(formData: any, sourcePath: string) {
   try {
     // Your Apps Script Web App URL
-    const response = await fetch("https://script.google.com/macros/s/AKfycbx7a6JTOmXFJQHRwaRNd-CzSs53ilDkeHTDCZZ5YJSDy4AE4jVtI5LT6VU7hEZEB8l_-Q/exec", {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbwF8Ze3nXsZ37zi-KeqJw5vr6dgbsI2NQ9taFyAWJPI3cSZ-emOJcisnYNHY57ls5ygWQ/exec", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ async function addToGoogleSheetViaAppScript(formData: any, sourcePath: string) {
     }
     
     const result = await response.json();
-    console.log('Data added to Google Sheets via Apps Script:', result);
+    // console.log('Data added to Google Sheets via Apps Script:', result);
     return true;
   } catch (error) {
     console.error('Error adding data to Google Sheets via Apps Script:', error);

@@ -56,6 +56,11 @@ const Header:  React.FC<HeaderProps> = ({ branchName }) => {
 
   return (
     <>
+    <div className="bg-blue-800 text-white text-center py-2">
+        <p className="text-sm md:text-xl lg:text-3xl xl:text-5xl font-medium">
+            <b>DA-IICT</b> renamed as <b>Dhirubhai Ambani University</b>
+        </p>
+    </div>
       <header className={`bg-white p-4 sticky top-0 z-40 transition-shadow duration-300 ${
         hasScrolled ? 'shadow-md' : ''
       }`}>

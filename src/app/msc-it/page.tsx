@@ -23,9 +23,21 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <main className="min-h-screen bg-white">
-            <Header branchName="MSc.IT."/>
+            <Header branchName="MSc.IT." />
+             <section id="top-recruiters">
+                <TopRecruiters />
+            </section>
             <section id="hero-section">
                 <HeroSection />
+            </section>
+            <section id="placement">
+                <Placement />
+            </section>
+            <section id="life-at-dau">
+                <LifeAtDAU />
+            </section>
+            <section id="campus-culture">
+                <CampusCulture />
             </section>
             <section id="faculty-highlights">
                 <FacultyHighlights />
@@ -33,12 +45,8 @@ export default function Home() {
             <section id="notable-awards">
                 <NotableAwards />
             </section>
-            <section id="top-recruiters">
-                <TopRecruiters />
-            </section>
-            <section id="placement">
-                <Placement />
-            </section>
+           
+
             {/* <section id="placement-stories">
         <PlacementStories />
       </section>
@@ -48,12 +56,7 @@ export default function Home() {
       <section id="top-faculty">
         <TopFaculty />
       </section> */}
-            <section id="life-at-dau">
-                <LifeAtDAU />
-            </section>
-            <section id="campus-culture">
-                <CampusCulture />
-            </section>
+
             <section id="about-us">
                 <AboutUs />
             </section>

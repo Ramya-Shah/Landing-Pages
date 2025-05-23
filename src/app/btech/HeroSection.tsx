@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
@@ -8,7 +8,10 @@ import Image from "next/image";
 
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const { setIsPopupOpen } = useContactFormContext();
+    const { setIsPopupOpen, isPopupOpen } = useContactFormContext();
+    const [pendingDownload, setPendingDownload] = useState(null);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [isDownloadAction, setIsDownloadAction] = useState(false);
 
     const scrollToSection = (sectionId: string) => {
         const section = document.getElementById(sectionId);
@@ -23,103 +26,173 @@ const HeroSection = () => {
         }
     };
 
+    // Listen for form submission events
+    useEffect(() => {
+        // Create a custom event listener for form submission
+        const handleFormSubmit = () => {
+            setFormSubmitted(true);
+        };
+        
+        window.addEventListener('contactFormSubmitted', handleFormSubmit);
+        
+        // Clean up event listener
+        return () => {
+            window.removeEventListener('contactFormSubmitted', handleFormSubmit);
+        };
+    }, []);
+    
+    // Check if form was submitted and download is pending
+    useEffect(() => {
+        if (formSubmitted && pendingDownload && !isPopupOpen) {
+            // Form submitted and popup closed, process the download
+            const link = document.createElement('a');
+            link.href = pendingDownload.url;
+            link.download = pendingDownload.filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Reset states
+            setPendingDownload(null);
+            setFormSubmitted(false);
+        }
+    }, [formSubmitted, pendingDownload, isPopupOpen]);
+
     const handleApplyNow = () => {
-        // Open the popup contact form instead of scrolling
+        // Open the popup contact form
+        setIsDownloadAction(false); // Mark that this is not a download action
+        localStorage.setItem('isApplyAction', 'true');
+        localStorage.removeItem('isDownloadAction');
+        setIsPopupOpen(true);
+    };
+    
+    const handleDownloadBrochure = (prog) => {
+        // Store the download info
+        setPendingDownload({
+            url: prog.brochureUrl,
+            filename: `${prog.name.replace(/\s+/g, '-')}-brochure.pdf`
+        });
+        
+        // Mark that this is a download action (not an apply action)
+        setIsDownloadAction(false); // Mark that this is not a download action
+        localStorage.setItem('isApplyAction', 'true');
+        localStorage.removeItem('isDownloadAction');
+        setIsPopupOpen(true);
+        
+        // Open the popup form
         setIsPopupOpen(true);
     };
 
+    const programs = [
+        {
+            name: "Information and Communication Technology (ICT)",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
+            brochureUrl: "/brochure/ICT.pdf",
+        },
+        {
+            name: "ICT with Minor in Computational Science",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
+            brochureUrl: "/brochure/ICTCS.pdf",
+        },
+        {
+            name: "Mathematics and Computing",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
+            brochureUrl: "/brochure/MnC.pdf",
+        },
+        {
+            name: "Electronics and VLSI Design",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
+            brochureUrl: "/brochure/EVD.pdf",
+        },
+    ];
+
     return (
-      <section className="relative bg-white  overflow-hidden">
-        {/* NetworkBackground remains unanimated */}
-        {/* <div className="absolute inset-0" style={{ height: "500px" }}>
-          <NetworkBackground />
-        </div> */}
-
-        <div className="container mx-auto relative z-10">
-          {/* Animated text content */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5 }}
-            className="py-16 text-center"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Bachelors in Technology (B.Tech)
-            </h1>
-
-            <p className="text-lg text-black mb-10 max-w-3xl mx-auto">
-            The B.Tech program at DAU equips students with the skills and mindset to excel in 
-            <br />
-            technology-driven careers. With industry-focused coursework, hands-on projects, and 
-            <br />
-            exposure to emerging tools, graduates are prepared for diverse roles in engineering, 
-            <br />
-            design, and research. A vibrant campus culture, active student communities, and tech-
-            <br />
-            focused events foster collaboration, creativity, and personal growth.
-            </p>
-
-            <div className="flex justify-center gap-4">
-              <Button
-                onClick={handleApplyNow}
-                className="bg-red-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
-              >
-                Apply Now
-              </Button>
-            </div>
-          </motion.div>
-          <motion.div 
+        <section className="py-0 relative bg-white overflow-hidden">
+            <div className="container mx-auto relative z-10">
+                {/* Animated text content */}
+                <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-white p-6 rounded-lg text-center mt-20"
-          >
-            <h2 className="text-2xl font-semibold mb-16">
-              Programs offered under{" "}
-              <span className="bg-gradient-to-r from-[#EF4023] to-[#FCBB4D] text-white px-4 py-1 rounded-lg">
-                BTech
-              </span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                    "Mathematics and Computing",
-                    "Information and Communication Technology",
-                    "Electronics and VLSI Design",
-                    "ICT with Minor in Computational Science"
-                ].map((specialization, index) => (
-                    <motion.div
-                        key={index}
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.2 }}
-                        className="border-l-[1px] border-r-[1px] border-b-[1px] border-[#EF4023] p-4 rounded-lg shadow-md bg-gray-100 hover:bg-red-600 group"
-                    >
-                        <span className="group-hover:text-white">{specialization}</span>
-                    </motion.div>
-                ))}
-            </div>
-          </motion.div>
-          {/* Animated image */}
-          <motion.div
-            initial={{ opacity: 0.5, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="my-8"
-          >
-            <Image 
-              src="/btech.png" 
-              alt="Decorative Path"
-              width={1200}
-              height={600}
-              priority
-              className="w-full h-auto"
-            />
-          </motion.div>
+                    className="py-0 text-center"
+                >
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                        Bachelors in Technology (B.Tech.)
+                    </h1>
 
-      
-                {/* Animated grid with statistic cards and logo */}
+                    <p className="text-lg text-black mb-10 max-w-3xl mx-auto">
+                        The B.Tech program at DAU equips students with the skills and mindset to excel in
+                        <br />
+                        technology-driven careers. With industry-focused coursework, hands-on projects, and
+                        <br />
+                        exposure to emerging tools, graduates are prepared for diverse roles in engineering,
+                        <br />
+                        design, and research. A vibrant campus culture, active student communities, and tech-
+                        <br />
+                        focused events foster collaboration, creativity, and personal growth.
+                    </p>
+                </motion.div>
+                <div className="flex flex-wrap items-center justify-center gap-2 px-2 py-1 text-center sm:text-left">
+                    <span className="text-2xl md:text-4xl font-bold">
+                        Programs offered under
+                    </span>
+                    <span className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-3 py-1 rounded-full text-xl sm:text-base md:text-5xl font-semibold shadow">
+                        B.Tech.
+                    </span>
+                </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
+                        {programs.map((prog) => (
+                            <div
+                                key={prog.name}
+                                className="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full"
+                            >
+                                <div className="text-center mb-4 flex-grow">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-2 h-24 flex items-center justify-center">
+                                        {prog.name}
+                                    </h3>
+                                    <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto rounded-full"></div>
+                                </div>
+
+                                <div className="space-y-3 mt-auto">
+                                    <Button
+                                        onClick={handleApplyNow}
+                                        className="w-full bg-red-500 hover:bg-amber-600 text-white py-3 text-lg rounded-lg transition-colors duration-200 font-semibold"
+                                    >
+                                        Apply Now
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleDownloadBrochure(prog)}
+                                        className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 text-md rounded-lg transition-colors duration-200 border-2 border-blue-500 hover:border-blue-700"
+                                    >
+                                        <span className="flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            Download Brochure
+                                        </span>
+                                    </Button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                <motion.div
+                    initial={{ opacity: 0.5, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="my-4"
+                >
+                    <Image
+                        src="/btech.png"
+                        alt="Decorative Path"
+                        width={1200}
+                        height={600}
+                        priority
+                        className="w-full h-auto"
+                    />
+                </motion.div>
+
                 <motion.div
                     className="grid grid-cols-1 gap-8"
                     initial="hidden"
@@ -134,58 +207,6 @@ const HeroSection = () => {
                         hidden: { opacity: 0, y: 20 },
                     }}
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10 w-full">
-                        {[
-                            {
-                                title: "50 Acres",
-                                subtitle: "of campus",
-                                bg: "bg-white",
-                                text: "text-blue-900",
-                            },
-                            {
-                                title: "No. 1",
-                                subtitle: "College for ICT",
-                                bg: "bg-white",
-                                text: "text-blue-900",
-                            },
-                            {
-                                title: "Center of Excellence",
-                                subtitle: "By Govt. of Gujarat",
-                                bg: "bg-white",
-                                text: "text-blue-900",
-                            },
-                            {
-                                title: "5 Star Ranking",
-                                subtitle: "by GSIRF",
-                                bg: "bg-red-600",
-                                text: "text-white",
-                            },
-                        ].slice(2,4).map((item, index) => (
-                            <motion.div
-                                key={index}
-                                whileHover={{ scale: 1.05, transition: { duration: 0 } }}
-                                className={`p-6 shadow-md rounded-md transition transform duration-300 hover:shadow-lg bg-gray-100 hover:bg-red-600 group col-span-1 w-full`}
-                            >
-                                <h3 className="text-3xl font-bold text-black group-hover:text-white">
-                                    {item.title}
-                                </h3>
-                                <p className="text-black group-hover:text-white">
-                                    {item.subtitle}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Animated DAU Logo */}
-                    {/* <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 0.5 }}
-                        className="hidden md:block"
-                    >
-                        <img src="/DAU_Logo.png" alt="DAU Logo" />
-                    </motion.div> */}
                 </motion.div>
             </div>
         </section>

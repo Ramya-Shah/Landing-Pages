@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useRef } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/legacy/image";
 import { useContactFormContext } from '@/contexts/ContactFormContext';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Add this object with country-specific states/territories
 const countryStates = {
@@ -59,9 +60,11 @@ interface FormData {
     email: string;
     phone: string;
     countryCode: string;
-    manualCountryCode: string; // For "Other" option
+    manualCountryCode: string;
     state: string;
-    manualState: string; // Add this for manual state entry
+    manualState: string;
+    authorized: boolean;
+    recaptcha: string | null; // Add this
 }
 
 interface SubmitMessage {
@@ -78,8 +81,8 @@ interface ValidationErrors {
 interface ContactFormProps {
     redirectUrl?: string;
 }
-
-const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category" }) => {
+const redirectUrl = "https://applyadmission.net/DA-IICT2025/" 
+const ContactForm: React.FC<ContactFormProps> = () => {
     const { isPopupOpen, setIsPopupOpen } = useContactFormContext();
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -88,7 +91,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
         countryCode: 'INR(+91)',
         manualCountryCode: '',
         state: '',
-        manualState: '' // Initialize the new field
+        manualState: '',
+        authorized: false,
+        recaptcha: null // Add this
     });
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [submitMessage, setSubmitMessage] = useState<SubmitMessage>({ text: '', isError: false });
@@ -101,6 +106,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
     });
     const [isBTechPage, setIsBTechPage] = useState<boolean>(false);
 
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const popupRecaptchaRef = useRef<ReCAPTCHA>(null);
+
     // Detect if this is the BTech page based on URL
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -110,13 +118,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
     }, []);
 
     // Show popup when user visits the site (after a small delay)
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsPopupOpen(true);
-        }, 0); // Shows popup after 3 seconds
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setIsPopupOpen(true);
+    //     }, 0); // Shows popup after 3 seconds
 
-        return () => clearTimeout(timer);
-    }, []);
+    //     return () => clearTimeout(timer);
+    // }, []);
 
     // Clear success message after timeout
     useEffect(() => {
@@ -170,10 +178,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-
-        // When country code changes, reset the state field if not available in new country
-        if (name === 'countryCode') {
+        const { name, value, type } = e.target as HTMLInputElement;
+        
+        if (type === 'checkbox') {
+            setFormData(prev => ({
+                ...prev,
+                [name]: (e.target as HTMLInputElement).checked
+            }));
+        } else if (name === 'countryCode') {
             const availableStates = countryStates[value as keyof typeof countryStates] || [];
             if (!availableStates.includes(formData.state)) {
                 setFormData(prev => ({
@@ -202,6 +214,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
         }));
     };
 
+    const handleRecaptchaChange = (value: string | null, isPopup = false) => {
+        setFormData(prev => ({
+            ...prev,
+            recaptcha: value
+        }));
+    };
+
     const validateForm = (): boolean => {
         const newErrors: ValidationErrors = {
             name: validateField('name', formData.name),
@@ -209,6 +228,23 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
             phone: validateField('phone', formData.phone),
             state: validateField('state', formData.state)
         };
+
+        // Check authorization and recaptcha
+        if (!formData.authorized) {
+            setSubmitMessage({ 
+                text: 'Please authorize DAU to contact you before submitting.', 
+                isError: true 
+            });
+            return false;
+        }
+
+        if (!formData.recaptcha) {
+            setSubmitMessage({ 
+                text: 'Please verify that you are not a robot.', 
+                isError: true 
+            });
+            return false;
+        }
 
         setErrors(newErrors);
         
@@ -254,7 +290,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
                 throw new Error(`Failed to submit form: ${responseData.error || response.statusText}`);
             }
 
-            // Form submitted successfully - clear form data
             setFormData({
                 name: '',
                 email: '',
@@ -273,6 +308,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
 
             setSubmitMessage({ text: successMessage, isError: false });
 
+            // Dispatch custom event to notify form was submitted
+            window.dispatchEvent(new Event('contactFormSubmitted'));
+
             // Show confirmation for non-popup form
             if (!isPopup) {
                 setShowConfirmation(true);
@@ -285,10 +323,24 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
 
             // Close popup form if needed
             if (isPopup) {
+                // Check if this is an apply action or download action
+                const isApplyAction = localStorage.getItem('isApplyAction') === 'true';
+                const isDownloadAction = localStorage.getItem('isDownloadAction') === 'true';
+                
                 setTimeout(() => {
                     setIsPopupOpen(false);
-                    // Redirect after closing popup
-                    window.location.href = redirectUrl;
+                    
+                    // Only redirect for apply actions, not for download actions
+                    if (isApplyAction) {
+                        // Redirect after closing popup for apply actions
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 500);
+                    }
+                    
+                    // Clear the action flags
+                    localStorage.removeItem('isApplyAction');
+                    localStorage.removeItem('isDownloadAction');
                 }, 2000);
             }
         } catch (error) {
@@ -299,6 +351,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
             });
         } finally {
             setIsSubmitting(false);
+
+            // Reset recaptcha after submission
+            if (isPopup) {
+                popupRecaptchaRef.current?.reset();
+            } else {
+                recaptchaRef.current?.reset();
+            }
+            
+            setFormData(prev => ({
+                ...prev,
+                recaptcha: null
+            }));
         }
     };
 
@@ -346,6 +410,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
                                     />
                                     {renderErrorMessage('name')}
                                 </div>
+
+
+
 
                                 <div>
                                     <Input
@@ -449,11 +516,39 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
                                     {renderErrorMessage('state')}
                                 </div>
 
+                                {/* Add this before the submit button in both forms */}
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id="popup-authorize"
+                                        name="authorized"
+                                        checked={formData.authorized}
+                                        onChange={handleInputChange}
+                                        className="h-4 w-4 text-red-500 focus:ring-amber-500 border-gray-300 rounded"
+                                        required
+                                    />
+                                    <label
+                                        htmlFor="popup-authorize"
+                                        className="ml-2 block text-sm text-gray-700"
+                                    >
+                                        I authorize DAU, Gandhinagar to contact me regarding admission information.
+                                    </label>
+                                </div>
+
+                                {/* Add reCAPTCHA widget */}
+                                <div className="flex justify-center my-4">
+                                    <ReCAPTCHA
+                                        ref={popupRecaptchaRef}
+                                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} // Replace with your key
+                                        onChange={(value) => handleRecaptchaChange(value, true)}
+                                    />
+                                </div>
+
                                 <div className="pt-4">
                                     <Button
                                         type="submit"
                                         className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || !formData.authorized}
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Apply Now'}
                                     </Button>
@@ -617,11 +712,40 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
                                 {renderErrorMessage('state')}
                             </div>
 
+                            {/* Add this before the submit button in both forms */}
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="authorize"
+                                    name="authorized"
+                                    checked={formData.authorized}
+                                    onChange={handleInputChange}
+                                    className="h-4 w-4 text-red-500 focus:ring-amber-500 border-gray-300 rounded"
+                                    required
+                                />
+                                <label
+                                    htmlFor="authorize"
+                                    className="ml-2 block text-sm text-gray-700"
+                                >
+                                    I authorize DAU, Gandhinagar to contact me regarding admission information.
+                                </label>
+                            </div>
+
+                            {/* Add reCAPTCHA widget */}
+                            <div>
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                                    onChange={(value) => handleRecaptchaChange(value, false)}
+                                    className="my-4"
+                                />
+                            </div>
+
                             <div className="pt-4">
                                 <Button
                                     type="submit"
                                     className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || !formData.authorized}
                                 >
                                     {isSubmitting ? 'Submitting...' : 'Apply Now'}
                                 </Button>

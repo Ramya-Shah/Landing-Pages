@@ -6,7 +6,7 @@ import Image from "next/legacy/image";
 
 const Placement: React.FC = () => {
     return (
-        <div className="container mx-auto px-2 py-8">
+        <div className="container mx-auto px-2 pb-6">
             <motion.div
                 className="grid grid-cols-1 gap-4"
                 initial="hidden"
