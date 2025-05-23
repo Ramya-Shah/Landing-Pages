@@ -175,6 +175,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
         // When country code changes, reset the state field if not available in new country
         if (name === 'countryCode') {
             const availableStates = countryStates[value as keyof typeof countryStates] || [];
+            //@ts-ignore
             if (!availableStates.includes(formData.state)) {
                 setFormData(prev => ({
                     ...prev,
