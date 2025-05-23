@@ -59,9 +59,10 @@ interface FormData {
     email: string;
     phone: string;
     countryCode: string;
-    manualCountryCode: string; // For "Other" option
+    manualCountryCode: string;
     state: string;
-    manualState: string; // Add this for manual state entry
+    manualState: string;
+    authorized: boolean; // Add this new field
 }
 
 interface SubmitMessage {
@@ -88,7 +89,8 @@ const ContactForm: React.FC<ContactFormProps> = () => {
         countryCode: 'INR(+91)',
         manualCountryCode: '',
         state: '',
-        manualState: '' // Initialize the new field
+        manualState: '',
+        authorized: false // Initialize as unchecked
     });
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [submitMessage, setSubmitMessage] = useState<SubmitMessage>({ text: '', isError: false });
@@ -170,10 +172,14 @@ const ContactForm: React.FC<ContactFormProps> = () => {
     };
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-
-        // When country code changes, reset the state field if not available in new country
-        if (name === 'countryCode') {
+        const { name, value, type } = e.target as HTMLInputElement;
+        
+        if (type === 'checkbox') {
+            setFormData(prev => ({
+                ...prev,
+                [name]: (e.target as HTMLInputElement).checked
+            }));
+        } else if (name === 'countryCode') {
             const availableStates = countryStates[value as keyof typeof countryStates] || [];
             if (!availableStates.includes(formData.state)) {
                 setFormData(prev => ({
@@ -209,6 +215,15 @@ const ContactForm: React.FC<ContactFormProps> = () => {
             phone: validateField('phone', formData.phone),
             state: validateField('state', formData.state)
         };
+
+        // Check authorization
+        if (!formData.authorized) {
+            setSubmitMessage({ 
+                text: 'Please authorize DAU to contact you before submitting.', 
+                isError: true 
+            });
+            return false;
+        }
 
         setErrors(newErrors);
         
@@ -469,11 +484,30 @@ const ContactForm: React.FC<ContactFormProps> = () => {
                                     {renderErrorMessage('state')}
                                 </div>
 
+                                {/* Add this before the submit button in both forms */}
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        id="popup-authorize"
+                                        name="authorized"
+                                        checked={formData.authorized}
+                                        onChange={handleInputChange}
+                                        className="h-4 w-4 text-red-500 focus:ring-amber-500 border-gray-300 rounded"
+                                        required
+                                    />
+                                    <label
+                                        htmlFor="popup-authorize"
+                                        className="ml-2 block text-sm text-gray-700"
+                                    >
+                                        I authorize DAU, Gandhinagar to contact me regarding admission information.
+                                    </label>
+                                </div>
+
                                 <div className="pt-4">
                                     <Button
                                         type="submit"
                                         className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
-                                        disabled={isSubmitting}
+                                        disabled={isSubmitting || !formData.authorized}
                                     >
                                         {isSubmitting ? 'Submitting...' : 'Apply Now'}
                                     </Button>
@@ -637,11 +671,30 @@ const ContactForm: React.FC<ContactFormProps> = () => {
                                 {renderErrorMessage('state')}
                             </div>
 
+                            {/* Add this before the submit button in both forms */}
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="authorize"
+                                    name="authorized"
+                                    checked={formData.authorized}
+                                    onChange={handleInputChange}
+                                    className="h-4 w-4 text-red-500 focus:ring-amber-500 border-gray-300 rounded"
+                                    required
+                                />
+                                <label
+                                    htmlFor="authorize"
+                                    className="ml-2 block text-sm text-gray-700"
+                                >
+                                    I authorize DAU, Gandhinagar to contact me regarding admission information.
+                                </label>
+                            </div>
+
                             <div className="pt-4">
                                 <Button
                                     type="submit"
                                     className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center"
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || !formData.authorized}
                                 >
                                     {isSubmitting ? 'Submitting...' : 'Apply Now'}
                                 </Button>
