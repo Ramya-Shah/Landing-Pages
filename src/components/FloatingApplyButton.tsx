@@ -27,7 +27,7 @@ const FloatingApplyButton: React.FC = () => {
   }, [pathname]);
 
   // 3) never render on the home page
-  if (pathname === "/") return null;
+  if (pathname === "/" || pathname === "/testing") return null;
 
   const handleClick = () => setIsPopupOpen(true);
 
