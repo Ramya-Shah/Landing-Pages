@@ -92,50 +92,21 @@ const HeroSection = () => {
               </Button>
             </div> */}
                 </motion.div>
+                <div className="flex flex-wrap items-center justify-center gap-2 px-4 py-1 text-center sm:text-left">
+                    <span className="text-2xl md:text-4xl font-bold">
+                        Programs offered under
+                    </span>
+                    <span className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-3 py-1 rounded-full text-sm sm:text-base md:text-4xl font-semibold shadow">
+                        B.Tech
+                    </span>
+                </div>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 0.5 }}
-                    className="bg-white p-6 rounded-lg text-center mt-20"
+                    className="bg-white p-2 rounded-lg text-center mt-20"
                 >
-                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
-                        {programs.map((prog) => (
-                            <div
-                                key={prog.name}
-                                className="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                            >
-                                <div className="text-center mb-4">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-2">
-                                        {prog.name}
-                                    </h3>
-                                    <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto rounded-full"></div>
-                                </div>
-
-                                <div className="space-y-3">
-                                    <Button
-                                        onClick={() => window.open(prog.applyUrl, "_blank")}
-                                        className="w-full bg-red-500 hover:bg-amber-600 text-white py-3 text-lg rounded-lg transition-colors duration-200 font-semibold"
-                                    >
-                                        Apply Now
-                                    </Button>
-                                    <Button
-                                        onClick={() => {
-                                            const link = document.createElement('a');
-                                            link.href = prog.brochureUrl;
-                                            link.download = `${prog.name.replace(/\s+/g, '-')}-brochure.pdf`;
-                                            document.body.appendChild(link);
-                                            link.click();
-                                            document.body.removeChild(link);
-                                        }}
-                                        className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 text-md rounded-lg transition-colors duration-200 border-2 border-blue-500 hover:border-blue-700"
-                                    >
-                                        📄 Download Brochure
-                                    </Button>
-                                </div>
-                            </div>
-                        ))}
-                    </div> */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
                         {programs.map((prog) => (
                             <div
