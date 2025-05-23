@@ -78,8 +78,8 @@ interface ValidationErrors {
 interface ContactFormProps {
     redirectUrl?: string;
 }
-
-const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.daiict.ac.in/undergraduate-admissions-all-india-category" }) => {
+const redirectUrl = "https://applyadmission.net/DA-IICT2025/" 
+const ContactForm: React.FC<ContactFormProps> = () => {
     const { isPopupOpen, setIsPopupOpen } = useContactFormContext();
     const [formData, setFormData] = useState<FormData>({
         name: '',
@@ -110,13 +110,13 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
     }, []);
 
     // Show popup when user visits the site (after a small delay)
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsPopupOpen(true);
-        }, 0); // Shows popup after 3 seconds
+    // useEffect(() => {
+    //     const timer = setTimeout(() => {
+    //         setIsPopupOpen(true);
+    //     }, 0); // Shows popup after 3 seconds
 
-        return () => clearTimeout(timer);
-    }, []);
+    //     return () => clearTimeout(timer);
+    // }, []);
 
     // Clear success message after timeout
     useEffect(() => {
@@ -175,7 +175,6 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
         // When country code changes, reset the state field if not available in new country
         if (name === 'countryCode') {
             const availableStates = countryStates[value as keyof typeof countryStates] || [];
-            //@ts-ignore
             if (!availableStates.includes(formData.state)) {
                 setFormData(prev => ({
                     ...prev,
@@ -274,6 +273,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
 
             setSubmitMessage({ text: successMessage, isError: false });
 
+            // Dispatch custom event to notify form was submitted
+            window.dispatchEvent(new Event('contactFormSubmitted'));
+
             // Show confirmation for non-popup form
             if (!isPopup) {
                 setShowConfirmation(true);
@@ -286,10 +288,24 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
 
             // Close popup form if needed
             if (isPopup) {
+                // Check if this is an apply action or download action
+                const isApplyAction = localStorage.getItem('isApplyAction') === 'true';
+                const isDownloadAction = localStorage.getItem('isDownloadAction') === 'true';
+                
                 setTimeout(() => {
                     setIsPopupOpen(false);
-                    // Redirect after closing popup
-                    window.location.href = redirectUrl;
+                    
+                    // Only redirect for apply actions, not for download actions
+                    if (isApplyAction) {
+                        // Redirect after closing popup for apply actions
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 500);
+                    }
+                    
+                    // Clear the action flags
+                    localStorage.removeItem('isApplyAction');
+                    localStorage.removeItem('isDownloadAction');
                 }, 2000);
             }
         } catch (error) {
@@ -312,7 +328,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
     return (
         <>
             {/* Popup Contact Form */}
-            {/* {isPopupOpen && (
+            {isPopupOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
                     <div className="bg-white rounded-lg max-w-md w-full relative animate-fade-in-up">
                         <button
@@ -347,6 +363,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
                                     />
                                     {renderErrorMessage('name')}
                                 </div>
+
+
+
 
                                 <div>
                                     <Input
@@ -463,7 +482,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ redirectUrl = "https://www.da
                         </div>
                     </div>
                 </div>
-            )} */}
+            )}
 
             {/* Main Contact Form Section */}
             <section className="py-16 bg-white">

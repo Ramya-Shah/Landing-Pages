@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
@@ -8,7 +8,10 @@ import Image from "next/image";
 
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const { setIsPopupOpen } = useContactFormContext();
+    const { setIsPopupOpen, isPopupOpen } = useContactFormContext();
+    const [pendingDownload, setPendingDownload] = useState(null);
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [isDownloadAction, setIsDownloadAction] = useState(false);
 
     const scrollToSection = (sectionId: string) => {
         const section = document.getElementById(sectionId);
@@ -23,8 +26,59 @@ const HeroSection = () => {
         }
     };
 
+    // Listen for form submission events
+    useEffect(() => {
+        // Create a custom event listener for form submission
+        const handleFormSubmit = () => {
+            setFormSubmitted(true);
+        };
+        
+        window.addEventListener('contactFormSubmitted', handleFormSubmit);
+        
+        // Clean up event listener
+        return () => {
+            window.removeEventListener('contactFormSubmitted', handleFormSubmit);
+        };
+    }, []);
+    
+    // Check if form was submitted and download is pending
+    useEffect(() => {
+        if (formSubmitted && pendingDownload && !isPopupOpen) {
+            // Form submitted and popup closed, process the download
+            const link = document.createElement('a');
+            link.href = pendingDownload.url;
+            link.download = pendingDownload.filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Reset states
+            setPendingDownload(null);
+            setFormSubmitted(false);
+        }
+    }, [formSubmitted, pendingDownload, isPopupOpen]);
+
     const handleApplyNow = () => {
-        // Open the popup contact form instead of scrolling
+        // Open the popup contact form
+        setIsDownloadAction(false); // Mark that this is not a download action
+        localStorage.setItem('isApplyAction', 'true');
+        localStorage.removeItem('isDownloadAction');
+        setIsPopupOpen(true);
+    };
+    
+    const handleDownloadBrochure = (prog) => {
+        // Store the download info
+        setPendingDownload({
+            url: prog.brochureUrl,
+            filename: `${prog.name.replace(/\s+/g, '-')}-brochure.pdf`
+        });
+        
+        // Mark that this is a download action (not an apply action)
+        setIsDownloadAction(true);
+        localStorage.setItem('isDownloadAction', 'true');
+        localStorage.removeItem('isApplyAction');
+        
+        // Open the popup form
         setIsPopupOpen(true);
     };
 
@@ -53,11 +107,6 @@ const HeroSection = () => {
 
     return (
         <section className="py-0 relative bg-white overflow-hidden">
-            {/* NetworkBackground remains unanimated */}
-            {/* <div className="absolute inset-0" style={{ height: "500px" }}>
-          <NetworkBackground />
-        </div> */}
-
             <div className="container mx-auto relative z-10">
                 {/* Animated text content */}
                 <motion.div
@@ -82,15 +131,6 @@ const HeroSection = () => {
                         <br />
                         focused events foster collaboration, creativity, and personal growth.
                     </p>
-
-                    {/* <div className="flex justify-center gap-4">
-              <Button
-                onClick={handleApplyNow}
-                className="bg-red-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
-              >
-                Apply Now
-              </Button>
-            </div> */}
                 </motion.div>
                 <div className="flex flex-wrap items-center justify-center gap-2 px-2 py-1 text-center sm:text-left">
                     <span className="text-2xl md:text-4xl font-bold">
@@ -122,20 +162,13 @@ const HeroSection = () => {
 
                                 <div className="space-y-3 mt-auto">
                                     <Button
-                                        onClick={() => window.open(prog.applyUrl, "_blank")}
+                                        onClick={handleApplyNow}
                                         className="w-full bg-red-500 hover:bg-amber-600 text-white py-3 text-lg rounded-lg transition-colors duration-200 font-semibold"
                                     >
                                         Apply Now
                                     </Button>
                                     <Button
-                                        onClick={() => {
-                                            const link = document.createElement('a');
-                                            link.href = prog.brochureUrl;
-                                            link.download = `${prog.name.replace(/\s+/g, '-')}-brochure.pdf`;
-                                            document.body.appendChild(link);
-                                            link.click();
-                                            document.body.removeChild(link);
-                                        }}
+                                        onClick={() => handleDownloadBrochure(prog)}
                                         className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 text-md rounded-lg transition-colors duration-200 border-2 border-blue-500 hover:border-blue-700"
                                     >
                                         <span className="flex items-center justify-center">
@@ -167,8 +200,6 @@ const HeroSection = () => {
                     />
                 </motion.div>
 
-
-                {/* Animated grid with statistic cards and logo */}
                 <motion.div
                     className="grid grid-cols-1 gap-8"
                     initial="hidden"
@@ -183,22 +214,8 @@ const HeroSection = () => {
                         hidden: { opacity: 0, y: 20 },
                     }}
                 >
-               
-
-                    {/* Animated DAU Logo */}
-                    {/* <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.5 }}
-                        transition={{ duration: 0.5 }}
-                        className="hidden md:block"
-                    >
-                        <img src="/DAU_Logo.png" alt="DAU Logo" />
-                    </motion.div> */}
                 </motion.div>
             </div>
-
-
         </section>
     );
 };
