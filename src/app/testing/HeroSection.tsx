@@ -92,11 +92,11 @@ const HeroSection = () => {
               </Button>
             </div> */}
                 </motion.div>
-                <div className="flex flex-wrap items-center justify-center gap-2 px-4 py-1 text-center sm:text-left">
+                <div className="flex flex-wrap items-center justify-center gap-2 px-2 py-1 text-center sm:text-left">
                     <span className="text-2xl md:text-4xl font-bold">
                         Programs offered under
                     </span>
-                    <span className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-3 py-1 rounded-full text-sm sm:text-base md:text-5xl font-semibold shadow">
+                    <span className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-3 py-1 rounded-full text-xl sm:text-base md:text-5xl font-semibold shadow">
                         B.Tech.
                     </span>
                 </div>
