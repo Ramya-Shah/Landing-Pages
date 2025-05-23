@@ -30,22 +30,22 @@ const HeroSection = () => {
 
     const programs = [
         {
-            name: "BTech ICT",
+            name: "Information and Communication Technology (ICT)",
             applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
             brochureUrl: "/brochure/ICT.pdf",
         },
         {
-            name: "BTech ICT-CS",
+            name: "ICT with Minor in Computational Science",
             applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
             brochureUrl: "/brochure/ICTCS.pdf",
         },
         {
-            name: "BTech MnC",
+            name: "Mathematics and Computing",
             applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
             brochureUrl: "/brochure/MnC.pdf",
         },
         {
-            name: "BTech EVD",
+            name: "Electronics and VLSI Design",
             applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
             brochureUrl: "/brochure/EVD.pdf",
         },
@@ -99,7 +99,7 @@ const HeroSection = () => {
                     transition={{ duration: 0.5 }}
                     className="bg-white p-6 rounded-lg text-center mt-20"
                 >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
+                    {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
                         {programs.map((prog) => (
                             <div
                                 key={prog.name}
@@ -135,38 +135,56 @@ const HeroSection = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                    <h2 className="text-2xl font-semibold mb-16">
-                        Programs offered under{" "}
-                        <span className="bg-gradient-to-r from-[#EF4023] to-[#FCBB4D] text-white px-4 py-1 rounded-lg">
-                            BTech
-                        </span>
-                    </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {[
-                            "Mathematics and Computing",
-                            "Information and Communication Technology",
-                            "Electronics and VLSI Design",
-                            "ICT with Minor in Computational Science"
-                        ].map((specialization, index) => (
-                            <motion.div
-                                key={index}
-                                whileHover={{ scale: 1.05 }}
-                                transition={{ duration: 0.2 }}
-                                className="border-l-[1px] border-r-[1px] border-b-[1px] border-[#EF4023] p-4 rounded-lg shadow-md bg-gray-100 hover:bg-red-600 group"
+                    </div> */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
+                        {programs.map((prog) => (
+                            <div
+                                key={prog.name}
+                                className="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full"
                             >
-                                <span className="group-hover:text-white">{specialization}</span>
-                            </motion.div>
+                                <div className="text-center mb-4 flex-grow">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-2 h-24 flex items-center justify-center">
+                                        {prog.name}
+                                    </h3>
+                                    <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto rounded-full"></div>
+                                </div>
+
+                                <div className="space-y-3 mt-auto">
+                                    <Button
+                                        onClick={() => window.open(prog.applyUrl, "_blank")}
+                                        className="w-full bg-red-500 hover:bg-amber-600 text-white py-3 text-lg rounded-lg transition-colors duration-200 font-semibold"
+                                    >
+                                        Apply Now
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            const link = document.createElement('a');
+                                            link.href = prog.brochureUrl;
+                                            link.download = `${prog.name.replace(/\s+/g, '-')}-brochure.pdf`;
+                                            document.body.appendChild(link);
+                                            link.click();
+                                            document.body.removeChild(link);
+                                        }}
+                                        className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 text-md rounded-lg transition-colors duration-200 border-2 border-blue-500 hover:border-blue-700"
+                                    >
+                                        <span className="flex items-center justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                            </svg>
+                                            Download Brochure
+                                        </span>
+                                    </Button>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </motion.div>
-                {/* Animated image */}
                 <motion.div
                     initial={{ opacity: 0.5, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="my-8"
+                    className="my-4"
                 >
                     <Image
                         src="/btech.png"
