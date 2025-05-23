@@ -74,9 +74,10 @@ const HeroSection = () => {
         });
         
         // Mark that this is a download action (not an apply action)
-        setIsDownloadAction(true);
-        localStorage.setItem('isDownloadAction', 'true');
-        localStorage.removeItem('isApplyAction');
+        setIsDownloadAction(false); // Mark that this is not a download action
+        localStorage.setItem('isApplyAction', 'true');
+        localStorage.removeItem('isDownloadAction');
+        setIsPopupOpen(true);
         
         // Open the popup form
         setIsPopupOpen(true);
