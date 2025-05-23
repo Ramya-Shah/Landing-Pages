@@ -140,13 +140,6 @@ const HeroSection = () => {
                         B.Tech.
                     </span>
                 </div>
-                <motion.div
-                    initial={{ opacity: 0.5, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.5 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-white p-2 rounded-lg text-center mt-20"
-                >
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
                         {programs.map((prog) => (
                             <div
@@ -182,7 +175,6 @@ const HeroSection = () => {
                             </div>
                         ))}
                     </div>
-                </motion.div>
                 <motion.div
                     initial={{ opacity: 0.5, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}

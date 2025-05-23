@@ -290,7 +290,6 @@ const ContactForm: React.FC<ContactFormProps> = () => {
                 throw new Error(`Failed to submit form: ${responseData.error || response.statusText}`);
             }
 
-            // Form submitted successfully - clear form data
             setFormData({
                 name: '',
                 email: '',
