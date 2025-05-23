@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 export async function POST(request: NextRequest) {
   try {
@@ -63,4 +64,36 @@ async function addToGoogleSheetViaAppScript(formData: any, sourcePath: string) {
     console.error('Error adding data to Google Sheets via Apps Script:', error);
     return false;
   }
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    try {
+        const { recaptcha, ...formData } = req.body;
+
+        // Verify reCAPTCHA
+        const recaptchaVerification = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptcha}`
+        });
+
+        const recaptchaResult = await recaptchaVerification.json();
+
+        if (!recaptchaResult.success) {
+            return res.status(400).json({ error: 'reCAPTCHA verification failed' });
+        }
+
+        // Your existing form processing logic
+        
+        return res.status(200).json({ message: 'Form submitted successfully', savedToSheets: true });
+    } catch (error) {
+        console.error('API error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 }

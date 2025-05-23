@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useRef } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/legacy/image";
 import { useContactFormContext } from '@/contexts/ContactFormContext';
+import ReCAPTCHA from "react-google-recaptcha";
 
 // Add this object with country-specific states/territories
 const countryStates = {
@@ -62,7 +63,8 @@ interface FormData {
     manualCountryCode: string;
     state: string;
     manualState: string;
-    authorized: boolean; // Add this new field
+    authorized: boolean;
+    recaptcha: string | null; // Add this
 }
 
 interface SubmitMessage {
@@ -90,7 +92,8 @@ const ContactForm: React.FC<ContactFormProps> = () => {
         manualCountryCode: '',
         state: '',
         manualState: '',
-        authorized: false // Initialize as unchecked
+        authorized: false,
+        recaptcha: null // Add this
     });
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [submitMessage, setSubmitMessage] = useState<SubmitMessage>({ text: '', isError: false });
@@ -102,6 +105,9 @@ const ContactForm: React.FC<ContactFormProps> = () => {
         state: ''
     });
     const [isBTechPage, setIsBTechPage] = useState<boolean>(false);
+
+    const recaptchaRef = useRef<ReCAPTCHA>(null);
+    const popupRecaptchaRef = useRef<ReCAPTCHA>(null);
 
     // Detect if this is the BTech page based on URL
     useEffect(() => {
@@ -208,6 +214,13 @@ const ContactForm: React.FC<ContactFormProps> = () => {
         }));
     };
 
+    const handleRecaptchaChange = (value: string | null, isPopup = false) => {
+        setFormData(prev => ({
+            ...prev,
+            recaptcha: value
+        }));
+    };
+
     const validateForm = (): boolean => {
         const newErrors: ValidationErrors = {
             name: validateField('name', formData.name),
@@ -216,10 +229,18 @@ const ContactForm: React.FC<ContactFormProps> = () => {
             state: validateField('state', formData.state)
         };
 
-        // Check authorization
+        // Check authorization and recaptcha
         if (!formData.authorized) {
             setSubmitMessage({ 
                 text: 'Please authorize DAU to contact you before submitting.', 
+                isError: true 
+            });
+            return false;
+        }
+
+        if (!formData.recaptcha) {
+            setSubmitMessage({ 
+                text: 'Please verify that you are not a robot.', 
                 isError: true 
             });
             return false;
@@ -331,6 +352,18 @@ const ContactForm: React.FC<ContactFormProps> = () => {
             });
         } finally {
             setIsSubmitting(false);
+
+            // Reset recaptcha after submission
+            if (isPopup) {
+                popupRecaptchaRef.current?.reset();
+            } else {
+                recaptchaRef.current?.reset();
+            }
+            
+            setFormData(prev => ({
+                ...prev,
+                recaptcha: null
+            }));
         }
     };
 
@@ -501,6 +534,15 @@ const ContactForm: React.FC<ContactFormProps> = () => {
                                     >
                                         I authorize DAU, Gandhinagar to contact me regarding admission information.
                                     </label>
+                                </div>
+
+                                {/* Add reCAPTCHA widget */}
+                                <div className="flex justify-center my-4">
+                                    <ReCAPTCHA
+                                        ref={popupRecaptchaRef}
+                                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} // Replace with your key
+                                        onChange={(value) => handleRecaptchaChange(value, true)}
+                                    />
                                 </div>
 
                                 <div className="pt-4">
@@ -688,6 +730,16 @@ const ContactForm: React.FC<ContactFormProps> = () => {
                                 >
                                     I authorize DAU, Gandhinagar to contact me regarding admission information.
                                 </label>
+                            </div>
+
+                            {/* Add reCAPTCHA widget */}
+                            <div>
+                                <ReCAPTCHA
+                                    ref={recaptchaRef}
+                                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+                                    onChange={(value) => handleRecaptchaChange(value, false)}
+                                    className="my-4"
+                                />
                             </div>
 
                             <div className="pt-4">
