@@ -31,22 +31,22 @@ const HeroSection = () => {
     const programs = [
         {
             name: "Information and Communication Technology (ICT)",
-            applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
             brochureUrl: "/brochure/ICT.pdf",
         },
         {
             name: "ICT with Minor in Computational Science",
-            applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
             brochureUrl: "/brochure/ICTCS.pdf",
         },
         {
             name: "Mathematics and Computing",
-            applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
             brochureUrl: "/brochure/MnC.pdf",
         },
         {
             name: "Electronics and VLSI Design",
-            applyUrl: "https://www.daiict.ac.in/undergraduate-admissions-all-india-category",
+            applyUrl: "https://applyadmission.net/DA-IICT2025/",
             brochureUrl: "/brochure/EVD.pdf",
         },
     ];
@@ -68,7 +68,7 @@ const HeroSection = () => {
                     className="py-0 text-center"
                 >
                     <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                        Bachelors in Technology (B.Tech)
+                        Bachelors in Technology (B.Tech.)
                     </h1>
 
                     <p className="text-lg text-black mb-10 max-w-3xl mx-auto">
@@ -96,8 +96,8 @@ const HeroSection = () => {
                     <span className="text-2xl md:text-4xl font-bold">
                         Programs offered under
                     </span>
-                    <span className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-3 py-1 rounded-full text-sm sm:text-base md:text-4xl font-semibold shadow">
-                        B.Tech
+                    <span className="bg-gradient-to-r from-orange-400 to-orange-600 text-white px-3 py-1 rounded-full text-sm sm:text-base md:text-5xl font-semibold shadow">
+                        B.Tech.
                     </span>
                 </div>
                 <motion.div
