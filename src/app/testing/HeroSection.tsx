@@ -183,47 +183,7 @@ const HeroSection = () => {
                         hidden: { opacity: 0, y: 20 },
                     }}
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-10 w-full">
-                        {[
-                            {
-                                title: "50 Acres",
-                                subtitle: "of campus",
-                                bg: "bg-white",
-                                text: "text-blue-900",
-                            },
-                            {
-                                title: "No. 1",
-                                subtitle: "College for ICT",
-                                bg: "bg-white",
-                                text: "text-blue-900",
-                            },
-                            {
-                                title: "Center of Excellence",
-                                subtitle: "By Govt. of Gujarat",
-                                bg: "bg-white",
-                                text: "text-blue-900",
-                            },
-                            {
-                                title: "5 Star Ranking",
-                                subtitle: "by GSIRF",
-                                bg: "bg-red-600",
-                                text: "text-white",
-                            },
-                        ].slice(2, 4).map((item, index) => (
-                            <motion.div
-                                key={index}
-                                whileHover={{ scale: 1.05, transition: { duration: 0 } }}
-                                className={`p-6 shadow-md rounded-md transition transform duration-300 hover:shadow-lg bg-gray-100 hover:bg-red-600 group col-span-1 w-full`}
-                            >
-                                <h3 className="text-3xl font-bold text-black group-hover:text-white">
-                                    {item.title}
-                                </h3>
-                                <p className="text-black group-hover:text-white">
-                                    {item.subtitle}
-                                </p>
-                            </motion.div>
-                        ))}
-                    </div>
+               
 
                     {/* Animated DAU Logo */}
                     {/* <motion.div
