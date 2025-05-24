@@ -27,6 +27,12 @@ export default function Home() {
             <section id="hero-section">
                 <HeroSection />
             </section>
+            <section id="campus-culture">
+                <CampusCulture />
+            </section>
+            <section id="life-at-dau">
+                <LifeAtDAU />
+            </section>
             <section id="faculty-highlights">
                 <FacultyHighlights />
             </section>
@@ -47,17 +53,12 @@ export default function Home() {
       <section id="top-faculty">
         <TopFaculty />
       </section> */}
-            <section id="campus-culture">
-                <CampusCulture />
-            </section>
-            <section id="life-at-dau">
-                <LifeAtDAU />
-            </section>
+
             <section id="about-us">
                 <AboutUs />
             </section>
             <section id="contact-form">
-                <ContactForm redirectUrl="https://www.daiict.ac.in/admission-phd"/>
+                <ContactForm redirectUrl="https://www.daiict.ac.in/admission-phd" />
             </section>
             <section id="details">
                 <Footer />

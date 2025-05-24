@@ -23,21 +23,27 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <main className="min-h-screen bg-white">
-            <Header branchName={"M.Tech."}/>
+            <Header branchName={"M.Tech."} />
+            <section id="top-recruiters">
+                <TopRecruiters />
+            </section>
             <section id="hero-section">
                 <HeroSection />
+            </section>
+            <section id="placement">
+                <Placement />
+            </section>
+            <section id="life-at-dau">
+                <LifeAtDAU />
+            </section>
+            <section id="campus-culture">
+                <CampusCulture />
             </section>
             <section id="faculty-highlights">
                 <FacultyHighlights />
             </section>
             <section id="notable-awards">
                 <NotableAwards />
-            </section>
-            <section id="top-recruiters">
-                <TopRecruiters />
-            </section>
-            <section id="placement">
-                <Placement />
             </section>
             {/* <section id="placement-stories">
         <PlacementStories />
@@ -48,17 +54,12 @@ export default function Home() {
       <section id="top-faculty">
         <TopFaculty />
       </section> */}
-            <section id="life-at-dau">
-                <LifeAtDAU />
-            </section>
-            <section id="campus-culture">
-                <CampusCulture />
-            </section>
+
             <section id="about-us">
                 <AboutUs />
             </section>
             <section id="contact-form">
-                <ContactForm redirectUrl="https://www.daiict.ac.in/mtech-ict-all-india-category"/>
+                <ContactForm redirectUrl="https://www.daiict.ac.in/mtech-ict-all-india-category" />
             </section>
             <section id="details">
                 <Footer />
