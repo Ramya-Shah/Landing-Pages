@@ -6,7 +6,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/legacy/image";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
-
+const programs = [
+    {
+        name: "M.Sc. in Information Technology",
+        applyUrl: "https://applyadmission.net/DA-IICT2025/",
+        brochureUrl: "/brochure/mscit.pdf",
+    },
+];
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -42,7 +48,7 @@ const HeroSection = () => {
             <div className="container mx-auto relative z-10 pb-4">
                 {/* Animated text content */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 1, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 0.5 }}
@@ -62,14 +68,41 @@ const HeroSection = () => {
                     DevOps, and Blockchain to build real-world problem-solving skills.
                     </p>
 
-                    <div className="flex justify-center gap-4">
-                        <Button
-                            onClick={handleApplyNow}
-                            className="bg-red-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
-                        >
-                            Apply Now
-                        </Button>
-                    </div>
+                      <div className="grid grid-cols-1 gap-6 max-w-xl mx-auto">
+                                            {programs.map((prog) => (
+                                                <div
+                                                    key={prog.name}
+                                                    className="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full"
+                                                >
+                                                    <div className="text-center mb-4 flex-grow">
+                                                        <h3 className="text-xl font-bold text-gray-800 mb-2 h-24 flex items-center justify-center">
+                                                            {prog.name}
+                                                        </h3>
+                                                        <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-amber-500 mx-auto rounded-full"></div>
+                                                    </div>
+                    
+                                                    <div className="space-y-3 mt-auto">
+                                                        <Button
+                                                            onClick={handleApplyNow}
+                                                            className="w-full bg-red-500 hover:bg-amber-600 text-white py-3 text-lg rounded-lg transition-colors duration-200 font-semibold"
+                                                        >
+                                                            Apply Now
+                                                        </Button>
+                                                        <Button
+                                                            onClick={() => handleDownloadBrochure(prog)}
+                                                            className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 text-md rounded-lg transition-colors duration-200 border-2 border-blue-500 hover:border-blue-700"
+                                                        >
+                                                            <span className="flex items-center justify-center">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                                </svg>
+                                                                Download Brochure
+                                                            </span>
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
                 </motion.div>
 
                 {/* Animated image */}

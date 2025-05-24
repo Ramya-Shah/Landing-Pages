@@ -115,7 +115,7 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="relative bg-white py-12 overflow-hidden">
+        <section className="relative bg-white overflow-hidden">
             {/* Shift the background image down by 100px */}
             {/* <div className="absolute left-0 right-0 top-[300px] h-[600px]">
                 <Image
@@ -170,19 +170,10 @@ const HeroSection = () => {
                         <br />
                         preparing students for impactful careers in design and innovation.
                     </p>
-
-                    <div className="flex justify-center gap-4">
-                        <Button
-                            onClick={handleApplyNow}
-                            className="bg-red-500 hover:bg-amber-600 text-white px-8 py-6 text-lg rounded-md"
-                        >
-                            Apply Now
-                        </Button>
-                    </div>
                 </motion.div>
 
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 1, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 0.5 }}
