@@ -23,7 +23,7 @@ const programs = [
 
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const { setIsPopupOpen,isPopupOpen } = useContactFormContext();
+    const { setIsPopupOpen, isPopupOpen } = useContactFormContext();
     const [pendingDownload, setPendingDownload] = useState(null);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isDownloadAction, setIsDownloadAction] = useState(false);
@@ -58,37 +58,37 @@ const HeroSection = () => {
         }
     };
 
-        // Listen for form submission events
-        useEffect(() => {
-            // Create a custom event listener for form submission
-            const handleFormSubmit = () => {
-                setFormSubmitted(true);
-            };
-            
-            window.addEventListener('contactFormSubmitted', handleFormSubmit);
-            
-            // Clean up event listener
-            return () => {
-                window.removeEventListener('contactFormSubmitted', handleFormSubmit);
-            };
-        }, []);
-        
-        // Check if form was submitted and download is pending
-        useEffect(() => {
-            if (formSubmitted && pendingDownload && !isPopupOpen) {
-                // Form submitted and popup closed, process the download
-                const link = document.createElement('a');
-                link.href = pendingDownload.url;
-                link.download = pendingDownload.filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Reset states
-                setPendingDownload(null);
-                setFormSubmitted(false);
-            }
-        }, [formSubmitted, pendingDownload, isPopupOpen]);
+    // Listen for form submission events
+    useEffect(() => {
+        // Create a custom event listener for form submission
+        const handleFormSubmit = () => {
+            setFormSubmitted(true);
+        };
+
+        window.addEventListener('contactFormSubmitted', handleFormSubmit);
+
+        // Clean up event listener
+        return () => {
+            window.removeEventListener('contactFormSubmitted', handleFormSubmit);
+        };
+    }, []);
+
+    // Check if form was submitted and download is pending
+    useEffect(() => {
+        if (formSubmitted && pendingDownload && !isPopupOpen) {
+            // Form submitted and popup closed, process the download
+            const link = document.createElement('a');
+            link.href = pendingDownload.url;
+            link.download = pendingDownload.filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Reset states
+            setPendingDownload(null);
+            setFormSubmitted(false);
+        }
+    }, [formSubmitted, pendingDownload, isPopupOpen]);
     const handleApplyNow = () => {
         // Open the popup contact form
         setIsDownloadAction(false); // Mark that this is not a download action

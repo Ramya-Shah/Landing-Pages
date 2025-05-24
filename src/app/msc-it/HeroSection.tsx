@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -15,12 +15,65 @@ const programs = [
 ];
 const HeroSection = () => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
-
-    const { setIsPopupOpen } = useContactFormContext();
-    const handleApplyNow = () => {
-        // Open the popup contact form instead of scrolling
-        setIsPopupOpen(true);
-    };
+        const { setIsPopupOpen, isPopupOpen } = useContactFormContext();
+        const [pendingDownload, setPendingDownload] = useState(null);
+        const [formSubmitted, setFormSubmitted] = useState(false);
+        const [isDownloadAction, setIsDownloadAction] = useState(false);
+        // Listen for form submission events
+        useEffect(() => {
+            // Create a custom event listener for form submission
+            const handleFormSubmit = () => {
+                setFormSubmitted(true);
+            };
+    
+            window.addEventListener('contactFormSubmitted', handleFormSubmit);
+    
+            // Clean up event listener
+            return () => {
+                window.removeEventListener('contactFormSubmitted', handleFormSubmit);
+            };
+        }, []);
+    
+        // Check if form was submitted and download is pending
+        useEffect(() => {
+            if (formSubmitted && pendingDownload && !isPopupOpen) {
+                // Form submitted and popup closed, process the download
+                const link = document.createElement('a');
+                link.href = pendingDownload.url;
+                link.download = pendingDownload.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+    
+                // Reset states
+                setPendingDownload(null);
+                setFormSubmitted(false);
+            }
+        }, [formSubmitted, pendingDownload, isPopupOpen]);
+        const handleApplyNow = () => {
+            // Open the popup contact form
+            setIsDownloadAction(false); // Mark that this is not a download action
+            localStorage.setItem('isApplyAction', 'true');
+            localStorage.removeItem('isDownloadAction');
+            setIsPopupOpen(true);
+        };
+    
+        const handleDownloadBrochure = (prog) => {
+            // Store the download info
+            setPendingDownload({
+                url: prog.brochureUrl,
+                filename: `${prog.name.replace(/\s+/g, '-')}-brochure.pdf`
+            });
+    
+            // Mark that this is a download action (not an apply action)
+            setIsDownloadAction(false); // Mark that this is not a download action
+            localStorage.setItem('isApplyAction', 'true');
+            localStorage.removeItem('isDownloadAction');
+            setIsPopupOpen(true);
+    
+            // Open the popup form
+            setIsPopupOpen(true);
+        };
     const scrollToSection = (sectionId: string) => {
         const section = document.getElementById(sectionId);
         if (section) {
