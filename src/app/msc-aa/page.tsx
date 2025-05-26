@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export default function Home() {
     return (
         <main className="min-h-screen bg-white">
-            <Header branchName="M.Des." />
+            <Header branchName="MSc. AA" />
             <section id="top-recruiters">
                 <TopRecruiters />
             </section>
