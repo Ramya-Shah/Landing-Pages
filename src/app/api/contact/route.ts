@@ -26,8 +26,15 @@ export async function POST(request: NextRequest) {
     }
 
     // 3) Extract source path from referer header
-    const referer = request.headers.get("referer") || "";
-    const sourcePath = referer ? new URL(referer).pathname : "";
+    let sourcePath = "";
+    const referer = request.headers.get("referer");
+    if (referer) {
+      try {
+        sourcePath = new URL(referer).pathname;
+      } catch {
+        // ignore invalid URL, keep empty string
+      }
+    }
 
     // 4) Submit to Google Sheets via Apps Script
     const savedToSheets = await addToGoogleSheetViaAppScript(
