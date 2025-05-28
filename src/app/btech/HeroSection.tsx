@@ -4,87 +4,28 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import Image from "next/image";
 import CountdownTimer from "./CountdownTimer";
+
+interface Program {
+  name: string;
+  applyUrl: string;
+  brochureUrl: string;
+}
 
 const HeroSection = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const { setIsPopupOpen, isPopupOpen } = useContactFormContext();
-  const [pendingDownload, setPendingDownload] = useState(null);
+  const [pendingDownload, setPendingDownload] = useState<{
+    url: string;
+    filename: string;
+  } | null>(null);
+  const [pendingDownloadAll, setPendingDownloadAll] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isDownloadAction, setIsDownloadAction] = useState(false);
 
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      // Close sidebar if open
-      if (isSidebarOpen) {
-        setSidebarOpen(false);
-      }
-
-      // Smooth scroll to the section
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  // Listen for form submission events
-  useEffect(() => {
-    // Create a custom event listener for form submission
-    const handleFormSubmit = () => {
-      setFormSubmitted(true);
-    };
-
-    window.addEventListener("contactFormSubmitted", handleFormSubmit);
-
-    // Clean up event listener
-    return () => {
-      window.removeEventListener("contactFormSubmitted", handleFormSubmit);
-    };
-  }, []);
-
-  // Check if form was submitted and download is pending
-  useEffect(() => {
-    if (formSubmitted && pendingDownload && !isPopupOpen) {
-      // Form submitted and popup closed, process the download
-      const link = document.createElement("a");
-      link.href = pendingDownload.url;
-      link.download = pendingDownload.filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // Reset states
-      setPendingDownload(null);
-      setFormSubmitted(false);
-    }
-  }, [formSubmitted, pendingDownload, isPopupOpen]);
-
-  const handleApplyNow = () => {
-    // Open the popup contact form
-    setIsDownloadAction(false); // Mark that this is not a download action
-    localStorage.setItem("isApplyAction", "true");
-    localStorage.removeItem("isDownloadAction");
-    setIsPopupOpen(true);
-  };
-
-  const handleDownloadBrochure = (prog) => {
-    // Store the download info
-    setPendingDownload({
-      url: prog.brochureUrl,
-      filename: `${prog.name.replace(/\s+/g, "-")}-brochure.pdf`,
-    });
-
-    // Mark that this is a download action (not an apply action)
-    setIsDownloadAction(false); // Mark that this is not a download action
-    localStorage.setItem("isApplyAction", "true");
-    localStorage.removeItem("isDownloadAction");
-    setIsPopupOpen(true);
-
-    // Open the popup form
-    setIsPopupOpen(true);
-  };
-
-  const programs = [
+  const programs: Program[] = [
     {
       name: "Information and Communication Technology (ICT)",
       applyUrl: "https://applyadmission.net/DA-IICT2025/",
@@ -107,10 +48,79 @@ const HeroSection = () => {
     },
   ];
 
+  // Listen for form submission custom event
+  useEffect(() => {
+    const handleFormSubmit = () => setFormSubmitted(true);
+    window.addEventListener("contactFormSubmitted", handleFormSubmit);
+    return () =>
+      window.removeEventListener("contactFormSubmitted", handleFormSubmit);
+  }, []);
+
+  // After form is submitted and popup closes, trigger download(s)
+  useEffect(() => {
+    if (!formSubmitted || isPopupOpen) return;
+
+    if (pendingDownload) {
+      // Single brochure download
+      const a = document.createElement("a");
+      a.href = pendingDownload.url;
+      a.download = pendingDownload.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } else if (pendingDownloadAll) {
+      // Bundle all into zip
+      const zip = new JSZip();
+      Promise.all(
+        programs.map((prog) =>
+          fetch(prog.brochureUrl)
+            .then((res) => res.blob())
+            .then((blob) =>
+              zip.file(`${prog.name.replace(/\s+/g, "-")}.pdf`, blob)
+            )
+        )
+      )
+        .then(() => zip.generateAsync({ type: "blob" }))
+        .then((content) => saveAs(content, "All-Brochures.zip"));
+    }
+
+    // Reset
+    setFormSubmitted(false);
+    setPendingDownload(null);
+    setPendingDownloadAll(false);
+  }, [
+    formSubmitted,
+    isPopupOpen,
+    pendingDownload,
+    pendingDownloadAll,
+    programs,
+  ]);
+
+  const handleApplyNow = () => {
+    setPendingDownload(null);
+    setPendingDownloadAll(false);
+    setIsPopupOpen(true);
+  };
+
+  const handleDownloadBrochure = (prog: Program) => {
+    setPendingDownload({
+      url: prog.brochureUrl,
+      filename: `${prog.name.replace(/\s+/g, "-")}.pdf`,
+    });
+    setPendingDownloadAll(false);
+    setIsPopupOpen(true);
+  };
+
+  const handleDownloadAll = () => {
+    setPendingDownload(null);
+    setPendingDownloadAll(true);
+    setIsPopupOpen(true);
+  };
+
   return (
     <section className="py-0 relative bg-white overflow-hidden">
       <div className="container mx-auto relative z-10">
-        {/* Animated text content */}
+        {/* Hero Intro */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -122,22 +132,14 @@ const HeroSection = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Bachelors in Technology (B.Tech.)
             </h1>
-
             <p className="text-lg text-black mb-4 md:mb-0 max-w-3xl">
               The B.Tech program at DAU equips students with the skills and
-              mindset to excel in
-              <br />
-              technology-driven careers. With industry-focused coursework,
-              hands-on projects, and
-              <br />
-              exposure to emerging tools, graduates are prepared for diverse
-              roles in engineering,
-              <br />
+              mindset to excel in technology-driven careers. With industry-
+              focused coursework, hands-on projects, and exposure to emerging
+              tools, graduates are prepared for diverse roles in engineering,
               design, and research. A vibrant campus culture, active student
-              communities, and tech-
-              <br />
-              focused events foster collaboration, creativity, and personal
-              growth.
+              communities, and tech-focused events foster collaboration,
+              creativity, and personal growth.
             </p>
           </motion.div>
 
@@ -146,7 +148,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-2 px-2 py-1 text-center sm:text-left">
+        {/* Programs Label */}
+        <div className="flex flex-wrap items-center justify-center gap-2 px-2 py-1 text-center sm:text-left mb-6">
           <span className="text-2xl md:text-4xl font-bold">
             Programs offered under
           </span>
@@ -154,7 +157,9 @@ const HeroSection = () => {
             B.Tech.
           </span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-16">
+
+        {/* Program Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {programs.map((prog) => (
             <div
               key={prog.name}
@@ -178,28 +183,24 @@ const HeroSection = () => {
                   onClick={() => handleDownloadBrochure(prog)}
                   className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 text-md rounded-lg transition-colors duration-200 border-2 border-blue-500 hover:border-blue-700"
                 >
-                  <span className="flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    Download Brochure
-                  </span>
+                  Download Brochure
                 </Button>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Download All Button */}
+        <div className="text-center mb-16">
+          <Button
+            onClick={handleDownloadAll}
+            className="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold"
+          >
+            Download All Brochures
+          </Button>
+        </div>
+
+        {/* Decorative Image */}
         <motion.div
           initial={{ opacity: 0.5, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -216,21 +217,6 @@ const HeroSection = () => {
             className="w-full h-auto"
           />
         </motion.div>
-
-        <motion.div
-          className="grid grid-cols-1 gap-8"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-          variants={{
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { staggerChildren: 0.1, duration: 0.5 },
-            },
-            hidden: { opacity: 0, y: 20 },
-          }}
-        ></motion.div>
       </div>
     </section>
   );
