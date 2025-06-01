@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { Card } from '@/components/ui/card';
+import React, { useEffect } from "react";
+import Image from "next/legacy/image";
+import { motion, useAnimation } from "framer-motion";
+import { Card } from "@/components/ui/card";
 
 const testimonials = [
   { name: "Mr. Pavitar Singh",     position: "Co-Founder & CEO",        company: "UnifyApps"      },
@@ -17,7 +18,7 @@ const testimonials = [
   { name: "Shashwat Singh",         position: "CIO",                     company: "Boat"           },
 ];
 
-const TestimonialsSection = () => {
+const TestimonialsSection = React.memo(() => {
   const controls = useAnimation();
 
   useEffect(() => {
@@ -56,8 +57,7 @@ const TestimonialsSection = () => {
           style={{ willChange: "transform" }}
         >
           {[...testimonials, ...testimonials].map((t, idx) => {
-            // Derive logo file name by removing spaces and appending .png
-            const logoFile = t.company.replace(/\s+/g, '') + '.png';
+            const logoFile = t.company.replace(/\s+/g, "") + ".png";
             return (
               <Card
                 key={idx}
@@ -65,11 +65,15 @@ const TestimonialsSection = () => {
               >
                 <div className="text-center h-full flex flex-col items-center">
                   {/* Company Logo (large) */}
-                  <img
-                    src={`/${logoFile}`}
-                    alt={t.company}
-                    className="mb-6 h-24 w-auto object-contain"
-                  />
+                  <div className="relative mb-6 h-24 w-32">
+                    <Image
+                      src={`/${logoFile}`}
+                      alt={t.company}
+                      layout="fill"
+                      objectFit="contain"
+                      priority={idx < testimonials.length ? true : false}
+                    />
+                  </div>
 
                   {/* Name of Alum (current size: text-lg) */}
                   <p className="text-lg font-semibold text-gray-900 mb-2">
@@ -88,6 +92,6 @@ const TestimonialsSection = () => {
       </div>
     </section>
   );
-};
+});
 
 export default TestimonialsSection;
