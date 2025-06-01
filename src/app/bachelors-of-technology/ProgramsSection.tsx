@@ -62,7 +62,7 @@ const ProgramsSection = () => {
             Programs <span className="text-orange-500">Offered</span>
           </h2>
           <p className="text-xl text-gray-600">
-            Choose from our industry-aligned B.Tech programs
+            Choose from our industry-aligned B.Tech. programs
           </p>
         </div>
 
