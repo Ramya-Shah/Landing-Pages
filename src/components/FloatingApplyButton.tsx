@@ -7,17 +7,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useContactFormContext } from "@/contexts/ContactFormContext";
 
 const FloatingApplyButton: React.FC = () => {
-  // 1) Hooks always run in same order
   const pathname = usePathname();
   const { setIsPopupOpen } = useContactFormContext();
   const [isVisible, setIsVisible] = useState(false);
 
-  // 2) After mount, if we're not on "/", wire up scroll listener
+  // 2) After mount, if we're not on ignored pages, wire up scroll listener
   useEffect(() => {
-    if (pathname === "/") return;
+    if (
+      pathname === "/" ||
+      pathname === "/bachelors-of-technology"
+    )
+      return;
 
     const onScroll = () => {
-      // show as soon as you scroll even 1px
       setIsVisible(window.scrollY > 0);
     };
 
@@ -26,8 +28,12 @@ const FloatingApplyButton: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  // 3) never render on the home page
-  if (pathname === "/" || pathname === "/testing") return null;
+  // 3) never render on the ignored pages
+  if (
+    pathname === "/" ||
+    pathname === "/bachelors-of-technology"
+  )
+    return null;
 
   const handleClick = () => setIsPopupOpen(true);
 
