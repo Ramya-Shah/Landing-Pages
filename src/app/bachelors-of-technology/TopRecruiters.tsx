@@ -29,7 +29,7 @@ const TopRecruiters: React.FC = () => {
   return (
     <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl text-center lg:text-4xl font-bold text-gray-900 mb-4">
             Some of <span className="text-orange-500">The Top Recruiters</span>
           </h2>
         {/*<p className="text-gray-900 text-xl text-center mb-12">
