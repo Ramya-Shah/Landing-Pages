@@ -15,7 +15,8 @@ const FloatingApplyButton: React.FC = () => {
   useEffect(() => {
     if (
       pathname === "/" ||
-      pathname === "/bachelors-of-technology"
+      pathname === "/bachelors-of-technology" ||
+      pathname === "/btech2" 
     )
       return;
 
@@ -32,6 +33,7 @@ const FloatingApplyButton: React.FC = () => {
   if (
     pathname === "/" ||
     pathname === "/bachelors-of-technology"
+    || pathname === "/btech2"
   )
     return null;
 
