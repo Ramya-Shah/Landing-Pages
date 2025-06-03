@@ -595,22 +595,82 @@ const ApplicationForm: React.FC = () => {
                   />
                 </div>
 
-                <div className="pt-4">
-                    <Button
+                <div className="pt-4 flex gap-4">
+                  {/* Apply Now */}
+                  <Button
                     type="submit"
-                    className="w-full bg-red-500 hover:bg-amber-600 text-white p-3 rounded-md text-center flex items-center justify-center gap-2"
                     disabled={isSubmitting || !formData.authorized}
-                    >
+                    className={`
+                      flex-1
+                      text-white
+                      p-3
+                      rounded-md
+                      flex
+                      items-center
+                      justify-center
+                      gap-2
+                      h-14
+                      transition
+
+                      !bg-red-500
+                      disabled:!bg-red-500
+                      disabled:opacity-100
+                      disabled:cursor-not-allowed
+
+                      ${!isSubmitting && formData.authorized ? "hover:bg-amber-600 cursor-pointer" : ""}
+                    `}
+                  >
                     {isSubmitting ? (
-                        "Submitting..."
+                      "Submitting..."
                     ) : (
-                        <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2">
                         Apply Now
                         <ExternalLink className="w-5 h-5" />
-                        </span>
+                      </span>
                     )}
-                    </Button>
+                  </Button>
 
+                  {/* Brochure (disabled until form is valid) */}
+                  <a
+                    href="/BTech_DAU.pdf"
+                    download
+                    aria-disabled={isSubmitting || !formData.authorized}
+                    className={`
+                      flex-1
+                      text-white
+                      p-3
+                      rounded-md
+                      flex
+                      items-center
+                      justify-center
+                      gap-2
+                      h-14
+                      transition
+                      bg-green-600
+                      ${isSubmitting || !formData.authorized
+                        ? "pointer-events-none cursor-not-allowed"
+                        : "hover:bg-green-700 cursor-pointer"
+                      }
+                    `}
+                  >
+                    <span className="flex items-center gap-2">
+                      Brochure
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"
+                        />
+                      </svg>
+                    </span>
+                  </a>
                 </div>
               </form>
             </div>
