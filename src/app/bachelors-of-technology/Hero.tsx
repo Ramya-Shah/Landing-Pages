@@ -15,7 +15,7 @@ const Hero = () => {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const targetDate = new Date('2025-06-09T23:59:59');
+      const targetDate = new Date('2025-06-20T23:59:59');
       const now = new Date();
       const diff = targetDate.getTime() - now.getTime();
       if (diff > 0) {
@@ -130,7 +130,7 @@ const Hero = () => {
                     </span>
                   </span>
                   <span className="text-3xl sm:text-5xl font-extrabold mt-2">
-                    9th June 2025
+                    20th June 2025
                   </span>
                 </div>
               </div>

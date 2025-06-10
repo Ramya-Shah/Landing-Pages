@@ -28,7 +28,7 @@ const calculateTimeLeft = (deadline: Date): TimeLeft => {
 };
 
 const CountdownTimer: React.FC = () => {
-  const deadline = new Date("2025-06-09T23:59:59");
+  const deadline = new Date("2025-06-20T23:59:59");
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
     calculateTimeLeft(deadline)
@@ -48,7 +48,7 @@ const CountdownTimer: React.FC = () => {
         <div className="text-white mb-4">
           <div className="text-3xl mb-2">⏰</div>
           <h3 className="text-2xl font-bold">Time left for Applying</h3>
-          <p className="text-orange-100">Application Deadline: June 9, 2025</p>
+          <p className="text-orange-100">Application Deadline: June 20, 2025</p>
         </div>
 
         <div className="grid grid-cols-4 gap-2">
